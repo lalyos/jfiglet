@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
+  
+  <groupId>com.github.lalyos</groupId>
+  <artifactId>jfiglet</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>jfiglet</name>
+  <description>Java implementation of FIGfonts (http://www.figlet.org/) to create ascii art banners</description>
+  <url>http://lalyos.github.io/jfiglet/</url>
+
+<licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <connection>scm:git:git://github.com/lalyos/jfiglet.git</connection>
+    <developerConnection>scm:git:git@github.com:lalyos/jfiglet.git</developerConnection>
+    <url>https://github.com/lalyos/jfiglet</url>
+  </scm>
+  <issueManagement>
+    <system>Github</system>
+    <url>https://github.com/lalyos/jfiglet/issues</url>
+  </issueManagement>
+  <developers>
+    <developer>
+      <id>lalyos</id>
+      <email>lalyos@yahoo.com</email>
+      <name>Lajos Papp</name>
+      <roles>
+        <role>owner</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+  </dependencies>
+  <build>
+    <plugins>
+  <plugin>
+  	<groupId>org.codehaus.mojo</groupId>
+    <artifactId>exec-maven-plugin</artifactId>
+    <version>1.2.1</version>
+    <configuration>
+    	  <mainClass>com.github.lalyos.jfiglet.FigletFont</mainClass>
+    	  
+    </configuration>
+  </plugin>
+    </plugins>
+  </build>
+</project>
