@@ -4,7 +4,17 @@ import java.net.*;
 import java.io.*;
 
 /**
- * FigletFont Java
+ * FigletFont implementation. A single static method call will create the ascii
+ * art in a mulitilne String. FigletFont format is specified at: 
+ * https://github.com/lalyos/jfiglet/blob/master/figfont.txt
+ * 
+ * <pre>
+ * <code>String asciiArt = FigletFont.convertOneLine("hello");</code>
+ * </pre>
+ * 
+ * Originally found at: http://www.rigaut.com/benoit/CERN/FigletJava/. Moved to
+ * <a href="http://lalyos.github.io/jfiglet/">github.com</a>.
+ * 
  * @author Benoit Rigaut CERN July 96
  * www.rigaut.com benoit@rigaut.com
  * released with GPL the 13th of november 2000 (my birthday!)
@@ -19,15 +29,35 @@ public class FigletFont {
   public char font[][][] = null;
   public String fontName = null;
   final public static int MAX_CHARS = 1024;
-  
+
+   /**
+     * Returns all character from this Font. Each character is defined as
+     * char[][]. So the whole font is a char[][][].
+     * 
+     * @return The representation of all characters.
+     */
   public char[][][] getFont() {
     return font;
   }
   
+    /**
+     * Return a single character represented as char[][].
+     * 
+     * @param c
+     *            The numerical id of the character.
+     * @return The definition of a single character.
+     */
   public char[][] getChar(int c) {
     return font[c];
   }
 
+    /**
+     * Selects a single line from a character. 
+     * 
+     * @param c Character id
+     * @param l Line number
+     * @return The selected line from the character
+     */
   public String getCharLineString(int c, int l) {
     if (font[c][l] == null)
       return null;
@@ -37,6 +67,11 @@ public class FigletFont {
     }
   }
 
+    /**
+     * Creates a FigletFont as specified at: https://github.com/lalyos/jfiglet/blob/master/figfont.txt
+     * 
+     * @param stream
+     */
   public FigletFont(InputStream stream) {
     font = new char[MAX_CHARS][][];
     DataInputStream data;
@@ -46,7 +81,6 @@ public class FigletFont {
     int charCode;
 
     String codeTag;
-
     try {
       data = new DataInputStream(new BufferedInputStream(stream));
  
@@ -60,8 +94,10 @@ public class FigletFont {
       smushMode = Integer.parseInt(st.nextToken());
       dummyI = Integer.parseInt(st.nextToken());
 
-      /* try to read the font name as the first word of
-         the first comment line, but this is not standardized ! */
+            /*
+             * try to read the font name as the first word of the first comment
+             * line, but this is not standardized !
+             */
       st = new StringTokenizer(data.readLine(), " ");
       if (st.hasMoreElements())
         fontName = st.nextToken();
@@ -135,6 +171,17 @@ public class FigletFont {
         return result;
     }
   
+    /**
+     * This is the main method which enables command-line usage
+     * 
+     * <pre>
+     * java -jar jfiglet.jar "hello"
+     * </pre>
+     * 
+     * @param args
+     *            the first argument will be converted to ascii art
+     * @throws Exception
+     */
   public static void main(String[] args) throws Exception {
       String text = "JFIGLET";
       if (args.length < 1) {
