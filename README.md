@@ -19,4 +19,6 @@ Figlet is a command-line tool which helps you to create ascii banners like this:
 First I wrapped http://artii.herokuapp.com/ which is based on the artii gem
 I found 2 java implementations:
 - [http://www.jave.de/eclipse/figlet/index.html] its not just FIGlet its too much, includes swing editor and so ...
-- 
+- [http://www.rigaut.com/benoit/CERN/FigletJava/] it contains a single class implementation, so i choose this one.
+
+
