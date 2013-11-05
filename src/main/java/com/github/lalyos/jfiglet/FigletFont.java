@@ -34,16 +34,14 @@ class FigletFont {
       return new String(font[c][l]);
   }
 
-  public FigletFont(URL aURL) {
+  public FigletFont(InputStream stream) {
     font = new char[256][][];
-    InputStream conn;
     DataInputStream data;
     String dummyS;
     char dummyC;
     int dummyI;
     try {
-      conn = aURL.openStream();
-      data = new DataInputStream(new BufferedInputStream(conn));
+      data = new DataInputStream(new BufferedInputStream(stream));
  
       dummyS = data.readLine();
       StringTokenizer st = new StringTokenizer(dummyS, " ");
@@ -104,14 +102,25 @@ class FigletFont {
     }
   }
   
-  private static String convertOneLine(String message, FigletFont figletFont) {
-      String result = "";
-      for (int l = 0; l < figletFont.height; l++) { // for each line
-        for (int c = 0; c < message.length(); c++) // for each char
-          result += figletFont.getCharLineString((int) message.charAt(c), l);
-        result += '\n';
-      }
-      return result;
+  private static String convertOneLine(String message)  {
+        String result = "";
+
+        FigletFont figletFont;
+        try {
+            InputStream stream = FigletFont.class.getClassLoader().getResourceAsStream("slant.flf");
+            figletFont = new FigletFont(stream);
+            for (int l = 0; l < figletFont.height; l++) { // for each line
+                for (int c = 0; c < message.length(); c++)
+                    // for each char
+                    result += figletFont.getCharLineString((int) message.charAt(c), l);
+                result += '\n';
+            }
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return result;
     }
   
   public static void main(String[] args) throws Exception {
@@ -121,9 +130,7 @@ class FigletFont {
       } else {
           text = args[0];
       }
-      //FigletFont font = new FigletFont(new URL("http://patorjk.com/software/taag/fonts/Small.flf"));
-      FigletFont font = new FigletFont(new URL("file:./src/main/resources/slant.flf"));
-      System.out.println(convertOneLine(text, font));
+      System.out.println(convertOneLine(text));
     }
   
 
