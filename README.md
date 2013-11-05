@@ -1,6 +1,10 @@
 # jfiglet
 
-Java implementation of FIGfonts (http://www.figlet.org/) to create ascii art banners
+Java implementation of FIGfonts (http://www.figlet.org/) to create ascii art banners. My goals were:
+
+- distributed as maven dependency, first as a [github hosted](http://lalyos.github.io/mvn-repo/) later reach cebtral repo
+- should be small
+
 
 ## Figlet
 
@@ -15,6 +19,36 @@ Figlet is a command-line tool which helps you to create ascii banners like this:
 ```
 
 ## Usage
+you can use it from command line or from java code
+
+## java api
+
+add the following maven dependency to your `pom.xml`
+
+```
+<dependency>
+	<groupId>com.github.lalyos</groupId>
+	<artifactId>jfiglet</artifactId>
+	<version>0.0.1</version>
+</dependency>
+
+```
+
+Then use the `convertOneLine()` static method to do the magic
+
+```
+import com.github.lalyos.jfiglet.FigletFont;
+
+public class App {
+  public static void main(String[] args) {
+    String asciiArt = FigletFont.convertOneLine("hello");
+    System.out.println(asciiArt);
+  }
+}
+
+```
+
+### command line
 
 You can use it from the source directory with maven
 
@@ -29,7 +63,7 @@ curl -o jfiglet.jar http://not-yet-distributed
 java -jar jfiglet.jar "text to convert"
 ```
 
-## artii
+## Related projects
 
 First I wrapped http://artii.herokuapp.com/ which is based on the artii gem
 I found 2 java implementations:
