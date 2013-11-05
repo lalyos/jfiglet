@@ -2,7 +2,7 @@
 
 Java implementation of FIGfonts (http://www.figlet.org/) to create ascii art banners. My goals were:
 
-- distributed as maven dependency, first as a [github hosted](http://lalyos.github.io/mvn-repo/) later reach cebtral repo
+- distributed as a maven dependency, first as a [github hosted](http://lalyos.github.io/mvn-repo/) later reach the central repo
 - should be small
 
 
@@ -71,3 +71,7 @@ I found 2 java implementations:
 - [http://www.rigaut.com/benoit/CERN/FigletJava/] it contains a single class implementation, so i choose this one.
 
 
+## Todo
+
+- *smush*-ing: *kerning* is already implemented  as default, smushing needs some coding.
+- add more fonts: first i wanted to keep it small, but want to deliver a couple of fonts included in the jar, or maybe as a separate maven dependency
