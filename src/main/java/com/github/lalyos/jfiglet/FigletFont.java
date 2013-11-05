@@ -1,3 +1,4 @@
+package com.github.lalyos.jfiglet;
 import java.util.*;
 import java.net.*;
 import java.io.*;
@@ -75,10 +76,11 @@ class FigletFont {
             int iNormal = i;
             boolean abnormal = true;
             if (h == 0) { 
-              try
+              try {
                 i = Integer.parseInt(dummyS);
-              catch (NumberFormatException e) 
+              } catch (NumberFormatException e) {
                 abnormal = false;
+              }
               if (abnormal)
                 dummyS = data.readLine();
               else
@@ -97,7 +99,32 @@ class FigletFont {
           }
         }
       }
-    } catch (IOException e) 
+    } catch (IOException e)  {
       System.out.println("IO Error: " + e.getMessage());
+    }
   }
+  
+  private static String convertOneLine(String message, FigletFont figletFont) {
+      String result = "";
+      for (int l = 0; l < figletFont.height; l++) { // for each line
+        for (int c = 0; c < message.length(); c++) // for each char
+          result += figletFont.getCharLineString((int) message.charAt(c), l);
+        result += '\n';
+      }
+      return result;
+    }
+  
+  public static void main(String[] args) throws Exception {
+      String text = "JFIGLET";
+      if (args.length < 1) {
+          System.out.println("Usage: java -jar jfiglet.jar <text-to-convert>");
+      } else {
+          text = args[0];
+      }
+      //FigletFont font = new FigletFont(new URL("http://patorjk.com/software/taag/fonts/Small.flf"));
+      FigletFont font = new FigletFont(new URL("file:./src/main/resources/slant.flf"));
+      System.out.println(convertOneLine(text, font));
+    }
+  
+
 }
