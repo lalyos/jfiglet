@@ -30,8 +30,10 @@ class FigletFont {
   public String getCharLineString(int c, int l) {
     if (font[c][l] == null)
       return null;
-    else
-      return new String(font[c][l]);
+    else {
+        String ret = new String(font[c][l]);
+        return ret.substring(1);
+    }
   }
 
   public FigletFont(InputStream stream) {
