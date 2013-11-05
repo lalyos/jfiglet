@@ -5,6 +5,7 @@ Java implementation of FIGfonts (http://www.figlet.org/) to create ascii art ban
 - distributed as a maven dependency, first as a [github hosted](http://lalyos.github.io/mvn-repo/) later reach the central repo
 - should be small
 
+I started out from Benoît Rigaut, Juillet work found at [www.rigaut.com](http://www.rigaut.com/benoit/CERN/FigletJava/)
 
 ## Figlet
 
