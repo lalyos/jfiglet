@@ -107,7 +107,7 @@ class FigletFont {
 
         FigletFont figletFont;
         try {
-            InputStream stream = FigletFont.class.getClassLoader().getResourceAsStream("slant.flf");
+            InputStream stream = FigletFont.class.getClassLoader().getResourceAsStream("standard.flf");
             figletFont = new FigletFont(stream);
             for (int l = 0; l < figletFont.height; l++) { // for each line
                 for (int c = 0; c < message.length(); c++)
