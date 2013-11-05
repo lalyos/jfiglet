@@ -14,6 +14,21 @@ Figlet is a command-line tool which helps you to create ascii banners like this:
 \____/_/   /___/\____/_____/_____/ /_/     
 ```
 
+## Usage
+
+You can use it from the source directory with maven
+
+```
+mvn exec:java -Dexec.arguments="jfiglet rulez"
+```
+
+Or from commandline
+
+```
+curl -o jfiglet.jar http://not-yet-distributed
+java -jar jfiglet.jar "text to convert"
+```
+
 ## artii
 
 First I wrapped http://artii.herokuapp.com/ which is based on the artii gem
