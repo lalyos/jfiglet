@@ -67,7 +67,7 @@ mvn exec:java -Dexec.arguments="jfiglet rulez"
 Or from commandline
 
 ```
-curl -o jfiglet.jar http://not-yet-distributed
+curl -o jfiglet.jar https://oss.sonatype.org/content/groups/public/com/github/lalyos/jfiglet/0.0.1/jfiglet-0.0.1.jar
 java -jar jfiglet.jar "text to convert"
 ```
 
