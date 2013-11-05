@@ -26,10 +26,17 @@ you can use it from command line or from java code
 add the following maven dependency to your `pom.xml`
 
 ```
+<repositories>
+    <repository>
+        <id>lalyos-snapshots</id>
+        <url>https://github.com/lalyos/mvn-repo/raw/master/snapshots</url>
+    </repository>
+</repositories>
+
 <dependency>
 	<groupId>com.github.lalyos</groupId>
 	<artifactId>jfiglet</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 </dependency>
 
 ```
