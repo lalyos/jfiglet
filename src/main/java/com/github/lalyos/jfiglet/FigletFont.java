@@ -104,7 +104,7 @@ class FigletFont {
     }
   }
   
-  private static String convertOneLine(String message)  {
+  public static String convertOneLine(String message)  {
         String result = "";
 
         FigletFont figletFont;
