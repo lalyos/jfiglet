@@ -10,7 +10,7 @@ import java.io.*;
  * released with GPL the 13th of november 2000 (my birthday!)
  *
  */
-class FigletFont {
+public class FigletFont {
   public char hardblank;
   public int height = -1;
   public int heightWithoutDescenders = -1;
