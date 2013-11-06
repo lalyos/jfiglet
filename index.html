@@ -1,56 +1,59 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Jfiglet by lalyos</title>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Jfiglet : Java implementation of FIGfonts http://www.figlet.org/" />
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Jfiglet</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1 class="header">Jfiglet</h1>
-        <p class="header">Java implementation of FIGfonts http://www.figlet.org/</p>
 
-        <ul>
-          <li class="download"><a class="buttons" href="https://github.com/lalyos/jfiglet/zipball/master">Download ZIP</a></li>
-          <li class="download"><a class="buttons" href="https://github.com/lalyos/jfiglet/tarball/master">Download TAR</a></li>
-          <li><a class="buttons github" href="https://github.com/lalyos/jfiglet">View On GitHub</a></li>
-        </ul>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/lalyos/jfiglet">View on GitHub</a>
 
-        <p class="header">This project is maintained by <a class="header name" href="https://github.com/lalyos">lalyos</a></p>
+          <h1 id="project_title">Jfiglet</h1>
+          <h2 id="project_tagline">Java implementation of FIGfonts http://www.figlet.org/</h2>
 
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/lalyos/jfiglet/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/lalyos/jfiglet/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
 
-      </header>
-      <section>
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
         <h1>
 <a name="jfiglet" class="anchor" href="#jfiglet"><span class="octicon octicon-link"></span></a>jfiglet</h1>
 
-<p>Java implementation of FIGfonts (<a href="http://www.figlet.org/">http://www.figlet.org/</a>) to create ascii art banners. My goals were:</p>
+<p>Java implementation of FIGfonts to create ascii art banners. My goals were:</p>
 
 <ul>
-<li>distributed as a maven dependency, first as a <a href="http://lalyos.github.io/mvn-repo/">github hosted</a> later reach the central repo</li>
+<li>distributed as a maven dependency</li>
 <li>should be small</li>
 </ul><p>I started out from Benoît Rigaut, Juillet work found at <a href="http://www.rigaut.com/benoit/CERN/FigletJava/">www.rigaut.com</a></p>
 
 <h2>
 <a name="figlet" class="anchor" href="#figlet"><span class="octicon octicon-link"></span></a>Figlet</h2>
 
-<p>Figlet is a command-line tool which helps you to create ascii banners like this:</p>
+<p><a href="http://www.figlet.org/">figlet</a> is a command-line tool which helps you to create ascii banners like this:</p>
 
-<pre><code>       ____________________    ____________
-      / / ____/  _/ ____/ /   / ____/_  __/
- __  / / /_   / // / __/ /   / __/   / /   
-/ /_/ / __/ _/ // /_/ / /___/ /___  / /    
-\____/_/   /___/\____/_____/_____/ /_/     
+<pre><code>     _  _____  ___   ____  _      _____  _____ 
+    | ||  ___||_ _| / ___|| |    | ____||_   _|
+ _  | || |_    | | | |  _ | |    |  _|    | |  
+| |_| ||  _|   | | | |_| || |___ | |___   | |  
+ \___/ |_|    |___| \____||_____||_____|  |_|  
 </code></pre>
+
+<p>Figlet has a <em>specification</em> which is included into the repo for easy access <a href="https://github.com/lalyos/jfiglet/blob/master/figfont.txt">here</a></p>
 
 <h2>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
@@ -62,17 +65,10 @@
 
 <p>add the following maven dependency to your <code>pom.xml</code></p>
 
-<pre><code>&lt;repositories&gt;
-    &lt;repository&gt;
-        &lt;id&gt;lalyos-snapshots&lt;/id&gt;
-        &lt;url&gt;https://github.com/lalyos/mvn-repo/raw/master/snapshots&lt;/url&gt;
-    &lt;/repository&gt;
-&lt;/repositories&gt;
-
-&lt;dependency&gt;
+<pre><code>&lt;dependency&gt;
     &lt;groupId&gt;com.github.lalyos&lt;/groupId&gt;
     &lt;artifactId&gt;jfiglet&lt;/artifactId&gt;
-    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;version&gt;0.0.1&lt;/version&gt;
 &lt;/dependency&gt;
 
 </code></pre>
@@ -100,7 +96,7 @@ public class App {
 
 <p>Or from commandline</p>
 
-<pre><code>curl -o jfiglet.jar http://not-yet-distributed
+<pre><code>curl -o jfiglet.jar http://central.maven.org/maven2/com/github/lalyos/jfiglet/0.0.1/jfiglet-0.0.1.jar
 java -jar jfiglet.jar "text to convert"
 </code></pre>
 
@@ -111,8 +107,10 @@ java -jar jfiglet.jar "text to convert"
 I found 2 java implementations:</p>
 
 <ul>
-<li>[<a href="http://www.jave.de/eclipse/figlet/index.html">http://www.jave.de/eclipse/figlet/index.html</a>] its not just FIGlet its too much, includes swing editor and so ...</li>
-<li>[<a href="http://www.rigaut.com/benoit/CERN/FigletJava/">http://www.rigaut.com/benoit/CERN/FigletJava/</a>] it contains a single class implementation, so i choose this one.</li>
+<li>
+<a href="http://www.jave.de/eclipse/figlet/index.html">http://www.jave.de/eclipse/figlet/index.html</a> its not just FIGlet its  much more, includes swing editor and so ...</li>
+<li>
+<a href="http://www.rigaut.com/benoit/CERN/FigletJava/">http://www.rigaut.com/benoit/CERN/FigletJava/</a> it contains a single class implementation, so i choose this one.</li>
 </ul><h2>
 <a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>Todo</h2>
 
@@ -122,12 +120,17 @@ I found 2 java implementations:</p>
 <li>add more fonts: first i wanted to keep it small, but want to deliver a couple of fonts included in the jar, or maybe as a separate maven dependency</li>
 </ul>
       </section>
-      <footer>
-        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Jfiglet maintained by <a href="https://github.com/lalyos">lalyos</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		          <script type="text/javascript">
+
+              <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
@@ -137,6 +140,7 @@ I found 2 java implementations:</p>
             pageTracker._trackPageview();
             } catch(err) {}
           </script>
+
 
   </body>
 </html>
