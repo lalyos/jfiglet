@@ -86,15 +86,21 @@ public class App {
 
 </code></pre>
 
+<h2>
+<a name="command-line" class="anchor" href="#command-line"><span class="octicon octicon-link"></span></a>command line</h2>
+
+<p>You can use the jar from the central repo, or use the latest development version from sourcecode;</p>
+
 <h3>
-<a name="command-line" class="anchor" href="#command-line"><span class="octicon octicon-link"></span></a>command line</h3>
+<a name="from-maven-central" class="anchor" href="#from-maven-central"><span class="octicon octicon-link"></span></a>from maven central</h3>
 
-<p>You can use it from the source directory with maven</p>
-
-<pre><code>mvn exec:java -Dexec.arguments="jfiglet rulez"
+<pre><code>git clone git@github.com:lalyos/jfiglet.git
+cd jfiglet
+mvn exec:java -Dexec.arguments="jfiglet rulez"
 </code></pre>
 
-<p>Or from commandline</p>
+<h3>
+<a name="from-source" class="anchor" href="#from-source"><span class="octicon octicon-link"></span></a>from source</h3>
 
 <pre><code>curl -o jfiglet.jar http://central.maven.org/maven2/com/github/lalyos/jfiglet/0.0.1/jfiglet-0.0.1.jar
 java -jar jfiglet.jar "text to convert"
