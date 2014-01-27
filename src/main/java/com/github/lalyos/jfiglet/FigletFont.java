@@ -18,6 +18,7 @@ public class FigletFont {
   public int smushMode = -1;
   public char font[][][] = null;
   public String fontName = null;
+  final public static int MAX_CHARS = 1024;
   
   public char[][][] getFont() {
     return font;
@@ -37,11 +38,15 @@ public class FigletFont {
   }
 
   public FigletFont(InputStream stream) {
-    font = new char[256][][];
+    font = new char[MAX_CHARS][][];
     DataInputStream data;
     String dummyS;
     char dummyC;
     int dummyI;
+    int charCode;
+
+    String codeTag;
+
     try {
       data = new DataInputStream(new BufferedInputStream(stream));
  
@@ -65,36 +70,41 @@ public class FigletFont {
 
       for (int i = 0; i < dummyI-1; i++) // skip the comments
         dummyS = data.readLine();
-      for (int i = 32; i < 256; i++) {  // for all the characters
+      charCode = 31;
+      while (dummyS!=null) {  // for all the characters
         //System.out.print(i+":");
+        charCode++;
         for (int h = 0; h < height; h++) {
           dummyS = data.readLine();
-          if (dummyS == null)
-            i = 256;
-          else {
+          if (dummyS != null){
             //System.out.println(dummyS);
-            int iNormal = i;
+            int iNormal = charCode;
             boolean abnormal = true;
-            if (h == 0) { 
+            if (h == 0) {
               try {
-                i = Integer.parseInt(dummyS);
+                  codeTag = dummyS.concat(" ").split(" ")[0];
+                  if (codeTag.length()>2&&"x".equals(codeTag.substring(1,2))){
+                      charCode = Integer.parseInt(codeTag.substring(2),16);
+                  } else {
+                      charCode = Integer.parseInt(codeTag);
+                  }
               } catch (NumberFormatException e) {
                 abnormal = false;
               }
               if (abnormal)
                 dummyS = data.readLine();
               else
-                i = iNormal;
+                charCode = iNormal;
             }
             if (h == 0)
-              font[i] = new char[height][];
+              font[charCode] = new char[height][];
             int t = dummyS.length() - 1 - ((h == height-1) ? 1 : 0);
             if (height == 1)
               t++;
-            font[i][h] = new char[t];
+            font[charCode][h] = new char[t];
             for (int l = 0; l < t; l++) {
               char a = dummyS.charAt(l);
-              font[i][h][l] = (a == hardblank) ? ' ' : a;
+              font[charCode][h][l] = (a == hardblank) ? ' ' : a;
             }
           }
         }
