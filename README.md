@@ -1,23 +1,25 @@
 # jfiglet
 
-Java implementation of FIGfonts (http://www.figlet.org/) to create ascii art banners. My goals were:
+Java implementation of FIGfonts to create ascii art banners. My goals were:
 
-- distributed as a maven dependency, first as a [github hosted](http://lalyos.github.io/mvn-repo/) later reach the central repo
+- distributed as a maven dependency
 - should be small
 
 I started out from Benoît Rigaut, Juillet work found at [www.rigaut.com](http://www.rigaut.com/benoit/CERN/FigletJava/)
 
 ## Figlet
 
-Figlet is a command-line tool which helps you to create ascii banners like this:
+[figlet](http://www.figlet.org/) is a command-line tool which helps you to create ascii banners like this:
 
 ```
-       ____________________    ____________
-      / / ____/  _/ ____/ /   / ____/_  __/
- __  / / /_   / // / __/ /   / __/   / /   
-/ /_/ / __/ _/ // /_/ / /___/ /___  / /    
-\____/_/   /___/\____/_____/_____/ /_/     
+     _  _____  ___   ____  _      _____  _____ 
+    | ||  ___||_ _| / ___|| |    | ____||_   _|
+ _  | || |_    | | | |  _ | |    |  _|    | |  
+| |_| ||  _|   | | | |_| || |___ | |___   | |  
+ \___/ |_|    |___| \____||_____||_____|  |_|  
 ```
+
+Figlet has a *specification* which is included into the repo for easy access [here](https://github.com/lalyos/jfiglet/blob/master/figfont.txt)
 
 ## Usage
 you can use it from command line or from java code
@@ -27,17 +29,10 @@ you can use it from command line or from java code
 add the following maven dependency to your `pom.xml`
 
 ```
-<repositories>
-    <repository>
-        <id>lalyos-snapshots</id>
-        <url>https://github.com/lalyos/mvn-repo/raw/master/snapshots</url>
-    </repository>
-</repositories>
-
 <dependency>
 	<groupId>com.github.lalyos</groupId>
 	<artifactId>jfiglet</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 </dependency>
 
 ```
@@ -56,27 +51,31 @@ public class App {
 
 ```
 
-### command line
+## command line
 
-You can use it from the source directory with maven
+You can use the jar from the central repo, or use the latest development version from sourcecode;
+
+### from maven central
 
 ```
+git clone git@github.com:lalyos/jfiglet.git
+cd jfiglet
 mvn exec:java -Dexec.arguments="jfiglet rulez"
 ```
-
-Or from commandline
+### from source
 
 ```
-curl -o jfiglet.jar https://oss.sonatype.org/content/groups/public/com/github/lalyos/jfiglet/0.0.1/jfiglet-0.0.1.jar
+curl -o jfiglet.jar http://central.maven.org/maven2/com/github/lalyos/jfiglet/0.0.1/jfiglet-0.0.1.jar
 java -jar jfiglet.jar "text to convert"
 ```
+
 
 ## Related projects
 
 First I wrapped http://artii.herokuapp.com/ which is based on the artii gem
 I found 2 java implementations:
-- [http://www.jave.de/eclipse/figlet/index.html] its not just FIGlet its too much, includes swing editor and so ...
-- [http://www.rigaut.com/benoit/CERN/FigletJava/] it contains a single class implementation, so i choose this one.
+- http://www.jave.de/eclipse/figlet/index.html its not just FIGlet its  much more, includes swing editor and so ...
+- http://www.rigaut.com/benoit/CERN/FigletJava/ it contains a single class implementation, so i choose this one.
 
 
 ## Todo
