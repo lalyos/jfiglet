@@ -24,7 +24,7 @@ Figlet has a *specification* which is included into the repo for easy access [he
 ## Usage
 you can use it from command line or from java code
 
-## java api
+## Maven dependency
 
 add the following maven dependency to your `pom.xml`
 
@@ -34,7 +34,25 @@ add the following maven dependency to your `pom.xml`
 	<artifactId>jfiglet</artifactId>
 	<version>0.0.1</version>
 </dependency>
+```
 
+### Snapshot repo
+
+Or if you want to use the latest development version, you can use the github based snapshot repo:
+
+```
+<repositories>
+    <repository>
+        <id>lalyos-snapshots</id>
+        <url>https://github.com/lalyos/mvn-repo/raw/master/snapshots</url>
+    </repository>
+</repositories>
+
+<dependency>
+    <groupId>com.github.lalyos</groupId>
+    <artifactId>jfiglet</artifactId>
+    <version>0.0.2-SNAPSHOT</version>
+</dependency>
 ```
 
 Then use the `convertOneLine()` static method to do the magic
@@ -55,14 +73,14 @@ public class App {
 
 You can use the jar from the central repo, or use the latest development version from sourcecode;
 
-### from maven central
+### from source
 
 ```
 git clone git@github.com:lalyos/jfiglet.git
 cd jfiglet
 mvn exec:java -Dexec.arguments="jfiglet rulez"
 ```
-### from source
+### from maven central
 
 ```
 curl -o jfiglet.jar http://central.maven.org/maven2/com/github/lalyos/jfiglet/0.0.1/jfiglet-0.0.1.jar
