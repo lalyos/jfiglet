@@ -61,7 +61,7 @@
 <p>you can use it from command line or from java code</p>
 
 <h2>
-<a name="java-api" class="anchor" href="#java-api"><span class="octicon octicon-link"></span></a>java api</h2>
+<a name="maven-dependency" class="anchor" href="#maven-dependency"><span class="octicon octicon-link"></span></a>Maven dependency</h2>
 
 <p>add the following maven dependency to your <code>pom.xml</code></p>
 
@@ -70,7 +70,25 @@
     &lt;artifactId&gt;jfiglet&lt;/artifactId&gt;
     &lt;version&gt;0.0.1&lt;/version&gt;
 &lt;/dependency&gt;
+</code></pre>
 
+<h3>
+<a name="snapshot-repo" class="anchor" href="#snapshot-repo"><span class="octicon octicon-link"></span></a>Snapshot repo</h3>
+
+<p>Or if you want to use the latest development version, you can use the github based snapshot repo:</p>
+
+<pre><code>&lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;id&gt;lalyos-snapshots&lt;/id&gt;
+        &lt;url&gt;https://github.com/lalyos/mvn-repo/raw/master/snapshots&lt;/url&gt;
+    &lt;/repository&gt;
+&lt;/repositories&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;com.github.lalyos&lt;/groupId&gt;
+    &lt;artifactId&gt;jfiglet&lt;/artifactId&gt;
+    &lt;version&gt;0.0.2-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;
 </code></pre>
 
 <p>Then use the <code>convertOneLine()</code> static method to do the magic</p>
@@ -92,7 +110,7 @@ public class App {
 <p>You can use the jar from the central repo, or use the latest development version from sourcecode;</p>
 
 <h3>
-<a name="from-maven-central" class="anchor" href="#from-maven-central"><span class="octicon octicon-link"></span></a>from maven central</h3>
+<a name="from-source" class="anchor" href="#from-source"><span class="octicon octicon-link"></span></a>from source</h3>
 
 <pre><code>git clone git@github.com:lalyos/jfiglet.git
 cd jfiglet
@@ -100,7 +118,7 @@ mvn exec:java -Dexec.arguments="jfiglet rulez"
 </code></pre>
 
 <h3>
-<a name="from-source" class="anchor" href="#from-source"><span class="octicon octicon-link"></span></a>from source</h3>
+<a name="from-maven-central" class="anchor" href="#from-maven-central"><span class="octicon octicon-link"></span></a>from maven central</h3>
 
 <pre><code>curl -o jfiglet.jar http://central.maven.org/maven2/com/github/lalyos/jfiglet/0.0.1/jfiglet-0.0.1.jar
 java -jar jfiglet.jar "text to convert"
