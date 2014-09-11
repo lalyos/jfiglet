@@ -55,18 +55,30 @@ Or if you want to use the latest development version, you can use the github bas
 </dependency>
 ```
 
-Then use the `convertOneLine()` static method to do the magic
+Then one could use number of `convertOneLine()` static methods to do the magic
 
 ```
 import com.github.lalyos.jfiglet.FigletFont;
 
 public class App {
   public static void main(String[] args) {
-    String asciiArt = FigletFont.convertOneLine("hello");
-    System.out.println(asciiArt);
+    // using default font standard.flf, obtained from maven artifact
+    String asciiArt1 = FigletFont.convertOneLine("hello");
+    System.out.println(asciiArt1);
+    
+    // using font font2.flf, located somewhere in classpath under path /flf/font2.flf
+    String asciiArt2 = FigletFont.convertOneLine(FigletFont.class.getResourceAsStream("/flf/font2.flf"), "hello");
+    System.out.println(asciiArt2);
+    
+    // using font font3.flf, located in file system under path /opt/font3.flf
+    String asciiArt3 = FigletFont.convertOneLine(new File("/opt/font3.flf), "hello");     
+    System.out.println(asciiArt3);
+        
+    // using font font4.flf, located in file system under path /opt/font4.flf
+    String asciiArt4 = FigletFont.convertOneLine("/opt/font4.flf", "hello");     
+    System.out.println(asciiArt4);            
   }
 }
-
 ```
 
 ## command line
@@ -86,7 +98,6 @@ mvn exec:java -Dexec.arguments="jfiglet rulez"
 curl -o jfiglet.jar http://central.maven.org/maven2/com/github/lalyos/jfiglet/0.0.3/jfiglet-0.0.3.jar
 java -jar jfiglet.jar "text to convert"
 ```
-
 
 ## Related projects
 
