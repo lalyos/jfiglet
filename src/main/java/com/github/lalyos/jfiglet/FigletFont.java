@@ -72,9 +72,9 @@ public class FigletFont {
      * 
      * @param stream
      */
-  public FigletFont(InputStream stream) {
+  public FigletFont(InputStream stream) throws IOException {
     font = new char[MAX_CHARS][][];
-    DataInputStream data;
+    DataInputStream data = null;
     String dummyS;
     char dummyC;
     int dummyI;
@@ -145,32 +145,42 @@ public class FigletFont {
           }
         }
       }
-    } catch (IOException e)  {
-      System.out.println("IO Error: " + e.getMessage());
+    } finally {
+        if (data != null) {
+            data.close();
+        }
     }
   }
-  
-  public static String convertOneLine(String message)  {
+
+
+    public String convert(String message) throws IOException {
         String result = "";
-
-        FigletFont figletFont;
-        try {
-            InputStream stream = FigletFont.class.getClassLoader().getResourceAsStream("standard.flf");
-            figletFont = new FigletFont(stream);
-            for (int l = 0; l < figletFont.height; l++) { // for each line
-                for (int c = 0; c < message.length(); c++)
-                    // for each char
-                    result += figletFont.getCharLineString((int) message.charAt(c), l);
-                result += '\n';
-            }
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        for (int l = 0; l < this.height; l++) { // for each line
+            for (int c = 0; c < message.length(); c++)
+                // for each char
+                result += this.getCharLineString((int) message.charAt(c), l);
+            result += '\n';
         }
         return result;
     }
-  
+
+    public static String convertOneLine(InputStream fontFileStream, String message) throws IOException {
+        return new FigletFont(fontFileStream).convert(message);
+    }
+
+    public static String convertOneLine(String message) throws IOException {
+        return convertOneLine(FigletFont.class.getClassLoader().getResourceAsStream("standard.flf"), message);
+    }
+
+    public static String convertOneLine(File fontFile, String message) throws IOException {
+        return convertOneLine(new FileInputStream(fontFile), message);
+    }
+
+    public static String convertOneLine(String fontFilePath, String message) throws IOException {
+        return convertOneLine(new FileInputStream(fontFilePath), message);
+    }
+
+
     /**
      * This is the main method which enables command-line usage
      * 
