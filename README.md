@@ -55,7 +55,7 @@ Or if you want to use the latest development version, you can use the github bas
 </dependency>
 ```
 
-Then one could use number of `convertOneLine()` static methods to do the magic
+Then one could use number of `convertOneLine(...)` static methods to do the magic
 
 ```
 import com.github.lalyos.jfiglet.FigletFont;
@@ -85,6 +85,16 @@ public class App {
 ## command line
 
 You can use the jar from the central repo, or use the latest development version from sourcecode;
+```
+Usage: java -jar jfiglet.jar [-f FLF_PATH|-F FLF_PATH] MESSAGE
+Prints MESSAGE to stdout as ASCII art using Figlet font
+Example: java -jar jfiglet.jar -f "/opt/myfont.flf" "Hello World"
+
+
+Figlet font:
+  -f  FLF_PATH is file path within file system
+  -F  FLF_PATH is classpath resource
+```
 
 ### from source
 
