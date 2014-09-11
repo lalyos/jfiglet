@@ -59,6 +59,7 @@ Then one could use number of `convertOneLine()` static methods to do the magic
 
 ```
 import com.github.lalyos.jfiglet.FigletFont;
+import java.io.File;
 
 public class App {
   public static void main(String[] args) {
@@ -71,7 +72,7 @@ public class App {
     System.out.println(asciiArt2);
     
     // using font font3.flf, located in file system under path /opt/font3.flf
-    String asciiArt3 = FigletFont.convertOneLine(new File("/opt/font3.flf), "hello");     
+    String asciiArt3 = FigletFont.convertOneLine(new File("/opt/font3.flf"), "hello");     
     System.out.println(asciiArt3);
         
     // using font font4.flf, located in file system under path /opt/font4.flf
