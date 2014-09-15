@@ -176,7 +176,15 @@ public class FigletFont {
         return convertOneLine(new FileInputStream(fontFile), message);
     }
 
-    public static String convertOneLine(String fontFilePath, String message) throws IOException {
-        return convertOneLine(new FileInputStream(fontFilePath), message);
+    public static String convertOneLine(String fontPath, String message) throws IOException {
+        InputStream fontStream = null;
+        if (fontPath.startsWith("classpath:")) {
+            fontStream = FigletFont.class.getResourceAsStream(fontPath.substring(10));
+        } else if (fontPath.startsWith("http://") || fontPath.startsWith("https://")) {
+            fontStream = new URL(fontPath).openStream();
+        } else {
+            fontStream = new FileInputStream(fontPath);
+        }
+        return convertOneLine(fontStream, message);
     }
 }

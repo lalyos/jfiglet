@@ -71,13 +71,19 @@ public class App {
     String asciiArt2 = FigletFont.convertOneLine(FigletFont.class.getResourceAsStream("/flf/font2.flf"), "hello");
     System.out.println(asciiArt2);
     
+    asciiArt2 = FigletFont.convertOneLine("classpath:/flf/font2.flf", "hello");     
+    System.out.println(asciiArt2);                
+    
     // using font font3.flf, located in file system under path /opt/font3.flf
     String asciiArt3 = FigletFont.convertOneLine(new File("/opt/font3.flf"), "hello");     
     System.out.println(asciiArt3);
-        
-    // using font font4.flf, located in file system under path /opt/font4.flf
-    String asciiArt4 = FigletFont.convertOneLine("/opt/font4.flf", "hello");     
-    System.out.println(asciiArt4);            
+
+    asciiArt3 = FigletFont.convertOneLine("/opt/font3.flf", "hello");     
+    System.out.println(asciiArt3);
+
+    // using font font4.flf, from www 
+    String asciiArt4 = FigletFont.convertOneLine("http://myhost.com/font4.flf", "hello");     
+    System.out.println(asciiArt4);                
   }
 }
 ```
@@ -86,14 +92,16 @@ public class App {
 
 You can use the jar from the central repo, or use the latest development version from sourcecode;
 ```
-Usage: java -jar jfiglet.jar [-f FLF_PATH|-F FLF_PATH] MESSAGE
+Usage: java -jar jfiglet.jar [-f FLF] MESSAGE
 Prints MESSAGE to stdout as ASCII art using Figlet font
 Example: java -jar jfiglet.jar -f "/opt/myfont.flf" "Hello World"
 
 
 Figlet font:
-  -f  FLF_PATH is file path within file system
-  -F  FLF_PATH is classpath resource
+  -f  FLF is font file location within file system, java classpath or www.
+      When FLF starts with `http://'|`https://' file will be fetched from WWW,
+      if FLF starts from `classpath:' then it will be looked for in JRE classpath,
+      otherwise FLF if path to file in file system
 ```
 
 ### from source
