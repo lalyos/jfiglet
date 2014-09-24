@@ -32,7 +32,7 @@ add the following maven dependency to your `pom.xml`
 <dependency>
 	<groupId>com.github.lalyos</groupId>
 	<artifactId>jfiglet</artifactId>
-	<version>0.0.3</version>
+	<version>0.0.5</version>
 </dependency>
 ```
 
@@ -114,7 +114,7 @@ mvn exec:java -Dexec.arguments="jfiglet rulez"
 ### from maven central
 
 ```
-curl -o jfiglet.jar http://central.maven.org/maven2/com/github/lalyos/jfiglet/0.0.3/jfiglet-0.0.3.jar
+curl -o jfiglet.jar http://central.maven.org/maven2/com/github/lalyos/jfiglet/0.0.5/jfiglet-0.0.5.jar
 java -jar jfiglet.jar "text to convert"
 ```
 
