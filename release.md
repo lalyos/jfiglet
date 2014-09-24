@@ -14,12 +14,28 @@ mvn release:prepare
 mvn release:perform
 ```
 
-## Manual release on sonatype web
+## Release on sonatype web
+
+The sonatype plugin closes, and releases automatically, but for reference,
+the manual process was:
 
 - Navigate to [Staging Repositories](https://oss.sonatype.org/#stagingRepositories)
 - Select your repo (mostly last in the list)
 - Close it
 - Release it
+
+## Bintray release
+
+```
+curl -Lo /tmp/bintray-functions j.mp/bintray-functions && . /tmp/bintray-functions
+cd target
+VERSION=$(ls -rt1 jfiglet-*.jar|tail -1|sed "s/.*jfiglet-\([0-9\.]*\).*/\1/")
+
+bint-upload-with-version lalyos maven jfiglet $VERSION jfiglet-$VERSION-javadoc.jar
+bint-upload lalyos maven jfiglet $VERSION jfiglet-$VERSION-sources.jar
+bint-upload lalyos maven jfiglet $VERSION jfiglet-$VERSION.pom
+bint-upload lalyos maven jfiglet $VERSION jfiglet-$VERSION.jar
+```
 
 ## Check
 
