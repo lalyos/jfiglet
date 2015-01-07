@@ -24,7 +24,7 @@ Figlet has a *specification* which is included into the repo for easy access [he
 ## Usage
 you can use it from command line or from java code
 
-## Maven dependency
+### Maven dependency
 
 add the following maven dependency to your `pom.xml`
 
@@ -32,28 +32,11 @@ add the following maven dependency to your `pom.xml`
 <dependency>
 	<groupId>com.github.lalyos</groupId>
 	<artifactId>jfiglet</artifactId>
-	<version>0.0.5</version>
+	<version>0.0.7</version>
 </dependency>
 ```
 
-### Snapshot repo
-
-Or if you want to use the latest development version, you can use the github based snapshot repo:
-
-```
-<repositories>
-    <repository>
-        <id>lalyos-snapshots</id>
-        <url>https://github.com/lalyos/mvn-repo/raw/master/snapshots</url>
-    </repository>
-</repositories>
-
-<dependency>
-    <groupId>com.github.lalyos</groupId>
-    <artifactId>jfiglet</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
-</dependency>
-```
+## Usage - code
 
 Then one could use number of `convertOneLine(...)` static methods to do the magic
 
@@ -88,7 +71,7 @@ public class App {
 }
 ```
 
-## command line
+## Usage - command line
 
 You can use the jar from the central repo, or use the latest development version from sourcecode;
 ```
@@ -114,7 +97,7 @@ mvn exec:java -Dexec.arguments="jfiglet rulez"
 ### from maven central
 
 ```
-curl -o jfiglet.jar http://central.maven.org/maven2/com/github/lalyos/jfiglet/0.0.5/jfiglet-0.0.5.jar
+curl -o jfiglet.jar http://central.maven.org/maven2/com/github/lalyos/jfiglet/0.0.7/jfiglet-0.0.7.jar
 java -jar jfiglet.jar "text to convert"
 ```
 
