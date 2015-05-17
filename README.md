@@ -91,7 +91,7 @@ Figlet font:
 
 ## Usage - smushing
 
-Smushing is now implemented, and will take the authors preference but this can be overriden;
+Smushing will use the authors preference by default, the authors preference can also be overridden;
 
 ```
 import com.github.lalyos.jfiglet.FigletFont;
