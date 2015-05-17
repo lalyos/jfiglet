@@ -38,7 +38,9 @@ add the following maven dependency to your `pom.xml`
 
 ## Usage - code
 
-Then one could use number of `convertOneLine(...)` static methods to do the magic
+Then one could use number of `convertMessage(...)` static methods to do the magic
+
+_NOTE: `covertOneLine(...)` was deprecated due to multi-line functionality being added._
 
 ```
 import com.github.lalyos.jfiglet.FigletFont;
@@ -47,25 +49,25 @@ import java.io.File;
 public class App {
   public static void main(String[] args) {
     // using default font standard.flf, obtained from maven artifact
-    String asciiArt1 = FigletFont.convertOneLine("hello");
+    String asciiArt1 = FigletFont.convertMessage("hello");
     System.out.println(asciiArt1);
     
     // using font font2.flf, located somewhere in classpath under path /flf/font2.flf
-    String asciiArt2 = FigletFont.convertOneLine(FigletFont.class.getResourceAsStream("/flf/font2.flf"), "hello");
+    String asciiArt2 = FigletFont.convertMessage(FigletFont.class.getResourceAsStream("/flf/font2.flf"), "hello");
     System.out.println(asciiArt2);
     
-    asciiArt2 = FigletFont.convertOneLine("classpath:/flf/font2.flf", "hello");     
+    asciiArt2 = FigletFont.convertMessage("classpath:/flf/font2.flf", "hello");
     System.out.println(asciiArt2);                
     
     // using font font3.flf, located in file system under path /opt/font3.flf
-    String asciiArt3 = FigletFont.convertOneLine(new File("/opt/font3.flf"), "hello");     
+    String asciiArt3 = FigletFont.convertMessage(new File("/opt/font3.flf"), "hello");
     System.out.println(asciiArt3);
 
-    asciiArt3 = FigletFont.convertOneLine("/opt/font3.flf", "hello");     
+    asciiArt3 = FigletFont.convertMessage("/opt/font3.flf", "hello");
     System.out.println(asciiArt3);
 
     // using font font4.flf, from www 
-    String asciiArt4 = FigletFont.convertOneLine("http://myhost.com/font4.flf", "hello");     
+    String asciiArt4 = FigletFont.convertMessage("http://myhost.com/font4.flf", "hello");
     System.out.println(asciiArt4);                
   }
 }
@@ -85,6 +87,24 @@ Figlet font:
       When FLF starts with `http://'|`https://' file will be fetched from WWW,
       if FLF starts from `classpath:' then it will be looked for in JRE classpath,
       otherwise FLF if path to file in file system
+```
+
+## Usage - smushing
+
+Smushing is now implemented, and will take the authors preference but this can be overriden;
+
+```
+import com.github.lalyos.jfiglet.FigletFont;
+
+public class App {
+  public static void main(String[] args) {
+    String asciiArt = new FigletFont()
+        .overridehLayout(FittingRules.LAYOUT.FULL_WIDTH)
+        .overridevLayout(FittingRules.LAYOUT.CONTROLLED_SMUSHING)
+        .convert("ab\nc");
+    System.out.println(asciiArt4);
+  }
+}
 ```
 
 ### from source
@@ -111,5 +131,4 @@ I found 2 java implementations:
 
 ## Todo
 
-- *smush*-ing: *kerning* is already implemented  as default, smushing needs some coding.
 - add more fonts: first i wanted to keep it small, but want to deliver a couple of fonts included in the jar, or maybe as a separate maven dependency

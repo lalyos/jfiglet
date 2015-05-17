@@ -1,19 +1,16 @@
 package com.github.lalyos.jfiglet;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 
-import static com.github.lalyos.jfiglet.FigletFont.convertOneLine;
+import static com.github.lalyos.jfiglet.FigletFont.convertMessage;
 
 public class JFiglet {
 
     public static void main(String[] args) throws IOException {
         if (args.length == 1) {
-            System.out.println(convertOneLine(args[0]));
+            System.out.println(convertMessage(args[0]));
         } else if (args.length == 3 && "-f".equals(args[0])) {
-            System.out.println(convertOneLine(args[1], args[2]));
+            System.out.println(convertMessage(args[1], args[2]));
         } else {
             usage();
         }
