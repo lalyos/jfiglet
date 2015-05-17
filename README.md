@@ -112,8 +112,8 @@ public class App {
     String asciiArt = new FigletFont()
         .overridehLayout(FittingRules.LAYOUT.FULL_WIDTH)
         .overridevLayout(FittingRules.LAYOUT.CONTROLLED_SMUSHING)
-        .convert("ab\nc");
-    System.out.println(asciiArt4);
+        .convert("jfiglet");
+    System.out.println(asciiArt);
   }
 }
 ```
