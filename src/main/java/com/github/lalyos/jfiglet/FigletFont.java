@@ -422,9 +422,9 @@ public class FigletFont {
             char ch2 = line2[ii];
             if (ch1 != ' ' && ch2 != ' ') {
                 if (fittingRules.getvLayout() == FittingRules.LAYOUT.FITTING) {
-                    result[ii] = uni_Smush(ch1, ch2, '\0');
+                    result[ii] = uni_Smush(ch1, ch2, hardblank);
                 } else if (fittingRules.getvLayout() == FittingRules.LAYOUT.SMUSHING) {
-                    result[ii] = uni_Smush(ch1, ch2, '\0');
+                    result[ii] = uni_Smush(ch1, ch2, hardblank);
                 } else {
                     Character validSmush = null;
                     validSmush = (fittingRules.isvRule5()) ? vRule5_Smush(ch1, ch2) : validSmush;
@@ -435,7 +435,7 @@ public class FigletFont {
                     result[ii] = validSmush;
                 }
             } else {
-                result[ii] = uni_Smush(ch1, ch2, '\0');
+                result[ii] = uni_Smush(ch1, ch2, hardblank);
             }
         }
         return result;
