@@ -3,6 +3,7 @@ package com.github.lalyos.jfiglet;
 import java.util.*;
 import java.net.*;
 import java.io.*;
+import java.util.concurrent.SynchronousQueue;
 
 /**
  * FigletFont implementation. A single static method call will create the ascii
@@ -364,9 +365,9 @@ public class FigletFont {
         int len2 = lines[0].length;
         int overlap;
         if (len1 > len2) {
-            padLines(lines, len1 - len2);
+            lines = padLines(lines, len1 - len2);
         } else if (len2 > len1) {
-            padLines(output, len2 - len1);
+            output = padLines(output, len2 - len1);
         }
         overlap = getVerticalSmushDist(output, lines);
         return verticalSmush(output, lines, overlap);
@@ -379,8 +380,8 @@ public class FigletFont {
         int curDist = 1;
         while (curDist <= maxDist) {
 
-            char[][] subLines1 = {lines1[Math.max(0, len1 - curDist)]};
-            char[][] subLines2 = {lines2[Math.min(maxDist, curDist)]};
+            char[][] subLines1 = Arrays.copyOfRange(lines1, Math.max(0, len1 - curDist),len1);
+            char[][] subLines2 = Arrays.copyOfRange(lines2, 0, Math.min(maxDist, curDist));
 
             int slen = subLines2.length;//TODO:check this
             CAN_VSMUSH result = null;
@@ -507,11 +508,11 @@ public class FigletFont {
     private Character hRule2_Smush(char ch1, char ch2) {
         char[] rule2Str = "|/\\[]{}()<>".toCharArray();
         if (ch1 == '_') {
-            if (Arrays.asList(rule2Str).indexOf(ch2) != -1) {
+            if (Arrays.binarySearch(rule2Str, ch2) != -1) {
                 return ch2;
             }
         } else if (ch2 == '_') {
-            if (Arrays.asList(rule2Str).indexOf(ch1) != -1) {
+            if (Arrays.binarySearch(rule2Str, ch1) != -1) {
                 return ch1;
             }
         }
@@ -527,9 +528,9 @@ public class FigletFont {
         will be used.
     */
     private Character hRule3_Smush(char ch1, char ch2) {
-        char[] rule3Classes = "| /\\ [] {} () <>".toCharArray();
-        int r3_pos1 = Arrays.asList(rule3Classes).indexOf(ch1);
-        int r3_pos2 = Arrays.asList(rule3Classes).indexOf(ch2);
+        char[] rule3Classes = "|/\\[]{}()<>".toCharArray();
+        int r3_pos1 = Arrays.binarySearch(rule3Classes, ch1);
+        int r3_pos2 = Arrays.binarySearch(rule3Classes, ch2);
         if (r3_pos1 != -1 && r3_pos2 != -1) {
             if (r3_pos1 != r3_pos2 && Math.abs(r3_pos1 - r3_pos2) != 1) {
                 return rule3Classes[Math.max(r3_pos1, r3_pos2)];
@@ -546,9 +547,9 @@ public class FigletFont {
         any such pair with a vertical bar ("|").
     */
     private Character hRule4_Smush(char ch1, char ch2) {
-        char[] rule4Str = "[] {} ()".toCharArray();
-        int r4_pos1 = Arrays.asList(rule4Str).indexOf(ch1);
-        int r4_pos2 = Arrays.asList(rule4Str).indexOf(ch2);
+        char[] rule4Str = "[]{}()".toCharArray();
+        int r4_pos1 = Arrays.binarySearch(rule4Str, ch1);
+        int r4_pos2 = Arrays.binarySearch(rule4Str, ch2);
         if (r4_pos1 != -1 && r4_pos2 != -1) {
             if (Math.abs(r4_pos1 - r4_pos2) <= 1) {
                 return '|';
@@ -571,8 +572,8 @@ public class FigletFont {
         rule5Hash.put('0', '|');
         rule5Hash.put('3', 'Y');
         rule5Hash.put('6', 'X');
-        int r5_pos1 = Arrays.asList(rule5Str).indexOf(ch1);
-        int r5_pos2 = Arrays.asList(rule5Str).indexOf(ch2);
+        int r5_pos1 = Arrays.binarySearch(rule5Str, ch1);
+        int r5_pos2 = Arrays.binarySearch(rule5Str, ch2);
         if (r5_pos1 != -1 && r5_pos2 != -1) {
             if ((r5_pos2 - r5_pos1) == 1) {
                 return rule5Hash.get(r5_pos1);
@@ -614,11 +615,11 @@ public class FigletFont {
     private Character vRule2_Smush(char ch1, char ch2) {
         char[] rule2Str = "|/\\[]{}()<>".toCharArray();
         if (ch1 == '_') {
-            if (Arrays.asList(rule2Str).indexOf(ch2) != -1) {
+            if (Arrays.binarySearch(rule2Str,ch2) != -1) {
                 return ch2;
             }
         } else if (ch2 == '_') {
-            if (Arrays.asList(rule2Str).indexOf(ch1) != -1) {
+            if (Arrays.binarySearch(rule2Str,ch1) != -1) {
                 return ch1;
             }
         }
@@ -631,9 +632,9 @@ public class FigletFont {
             Same as horizontal smushing rule 3.
     */
     private Character vRule3_Smush(char ch1, char ch2) {
-        char[] rule3Classes = "| /\\ [] {} () <>".toCharArray();
-        int r3_pos1 = Arrays.asList(rule3Classes).indexOf(ch1);
-        int r3_pos2 = Arrays.asList(rule3Classes).indexOf(ch2);
+        char[] rule3Classes = "|/\\[]{}()<>".toCharArray();
+        int r3_pos1 = Arrays.binarySearch(rule3Classes, ch1);
+        int r3_pos2 = Arrays.binarySearch(rule3Classes, ch2);
         if (r3_pos1 != -1 && r3_pos2 != -1) {
             if (r3_pos1 != r3_pos2 && Math.abs(r3_pos1 - r3_pos2) != 1) {
                 return rule3Classes[Math.max(r3_pos1, r3_pos2)];
@@ -689,7 +690,7 @@ public class FigletFont {
     */
 
     private Character uni_Smush(char ch1, char ch2, char hardBlank) {
-        if (ch2 == ' ' || ch2 == '\0') {
+        if (ch2 == ' ') {
             return ch1;
         } else if (ch2 == hardBlank && ch1 != ' ') {
             return ch1;
