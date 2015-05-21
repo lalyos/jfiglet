@@ -1,9 +1,9 @@
 package com.github.lalyos.jfiglet;
 
-import java.util.*;
-import java.net.*;
 import java.io.*;
-import java.util.concurrent.SynchronousQueue;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 /**
  * FigletFont implementation. A single static method call will create the ascii
@@ -36,7 +36,7 @@ public class FigletFont {
     final public static int MAX_CHARS = 1024;
     public final FittingRules fittingRules;
 
-    private static enum CAN_VSMUSH {VALID, INVAID, END}
+    private static enum CAN_VERTICAL_SMUSH {VALID, INVALID, END}
 
     /**
      * Returns all character from this Font. Each character is defined as
@@ -74,28 +74,27 @@ public class FigletFont {
         }
     }
 
-    public FigletFont overridehLayout(FittingRules.LAYOUT layout) {
-        fittingRules.overridehLayout(layout);
-        return this;
-    }
-
-    public FigletFont overridevLayout(FittingRules.LAYOUT layout) {
-        fittingRules.overridevLayout(layout);
-        return this;
-    }
+//    public FigletFont overrideHorizontalLayout(FittingRules.LAYOUT layout) {
+//        fittingRules.overrideHorizontalLayout(layout);
+//        return this;
+//    }
+//
+//    public FigletFont overrideVerticalLayout(FittingRules.LAYOUT layout) {
+//        fittingRules.overrideVerticalLayout(layout);
+//        return this;
+//    }
 
 
     /**
      * Creates a FigletFont as specified at: https://github.com/lalyos/jfiglet/blob/master/figfont.txt
      *
-     * @param stream
+     * @param stream font input stream.
      */
 
     public FigletFont(InputStream stream) throws IOException {
         font = new char[MAX_CHARS][][];
         BufferedReader data = null;
         String dummyS;
-        char dummyC;
         int dummyI;
         int charCode;
 
@@ -105,6 +104,7 @@ public class FigletFont {
 
             dummyS = data.readLine();
             StringTokenizer st = new StringTokenizer(dummyS, " ");
+            int count = st.countTokens();
             String s = st.nextToken();
             hardblank = s.charAt(s.length() - 1);
             height = Integer.parseInt(st.nextToken());
@@ -112,9 +112,10 @@ public class FigletFont {
             maxLine = Integer.parseInt(st.nextToken());
             smushMode = Integer.parseInt(st.nextToken());
             dummyI = Integer.parseInt(st.nextToken());
-            printDirection = (st.countTokens() >= 6) ? Integer.parseInt(st.nextToken()) : 0;
-            fullLayout = (st.countTokens() >= 7) ? Integer.parseInt(st.nextToken()) : null;
-            codeTagCount = (st.countTokens() >= 8) ? Integer.parseInt(st.nextToken()) : null;
+
+            printDirection = (count >= 6) ? Integer.parseInt(st.nextToken()) : 0;
+            fullLayout = (count >= 7) ? Integer.parseInt(st.nextToken()) : null;
+            codeTagCount = (count >= 8) ? Integer.parseInt(st.nextToken()) : null;
             fittingRules = new FittingRules(smushMode, fullLayout);
 
             /*
@@ -178,8 +179,7 @@ public class FigletFont {
 
     public String convert(String message) throws IOException {
         String result = "";
-        message.replaceAll("\r\n", "\n");
-        message.replaceAll("\r", "\n");
+        message = message.replaceAll("\r\n", "\n").replaceAll("\r", "\n");
         int maxLines = message.split("\n").length;
         char[][][] figLines = new char[maxLines][height][];
         int lineNumber = 0;
@@ -188,7 +188,7 @@ public class FigletFont {
             for (int c = 0; c < line.length(); c++) {
                 char[][] figChar = getChar(line.charAt(c));
                 int overlap = 0;
-                if (fittingRules.gethLayout() != FittingRules.LAYOUT.FULL_WIDTH) {
+                if (! fittingRules.isHorizontalFullWidthEnabled()) {
                     overlap = 10000;// a value too high to be the overlap
                     for (int row = 0; row < height; row++) {
                         overlap = Math.min(overlap, getHorizontalSmushLength(r[row], figChar[row]));
@@ -204,8 +204,8 @@ public class FigletFont {
         for (int ii = 1; ii < maxLines; ii++) {
             output = smushVerticalFigLines(output, figLines[ii]);
         }
-        for (int line = 0; line < output.length; line++) {
-            result = result + String.valueOf(output[line]) + System.getProperty("line.separator");
+        for (char[] line : output) {
+            result = result + String.valueOf(line) + System.getProperty("line.separator");
         }
         return result;
     }
@@ -228,31 +228,30 @@ public class FigletFont {
                 char ch1 = ((j < len1) ? seg1.substring(j, j + 1) : " ").charAt(0);
                 char ch2 = ((j < len2) ? seg2.substring(j, j + 1) : " ").charAt(0);
                 if (ch1 != ' ' && ch2 != ' ') {
-                    if (fittingRules.gethLayout() != FittingRules.LAYOUT.FITTING) {
-                        piece2 += uni_Smush(ch1, ch2, hardblank);
-                    } else if (fittingRules.gethLayout() != FittingRules.LAYOUT.SMUSHING) {
-                        piece2 += uni_Smush(ch1, ch2, hardblank);
+                    if (fittingRules.isHorizontalFittingEnabled()) {
+                        piece2 += SmushingRules.uni_Smush(ch1, ch2, hardblank);
+                    } else if (fittingRules.isHorizontalSmushingEnabled()) {
+                        piece2 += SmushingRules.uni_Smush(ch1, ch2, hardblank);
                     } else {
                         // Controlled Smushing
-                        Character nextCh = null;
-                        nextCh = (nextCh == null && fittingRules.ishRule1()) ? hRule1_Smush(ch1, ch2, hardblank) : nextCh;
-                        nextCh = (nextCh == null && fittingRules.ishRule2()) ? hRule2_Smush(ch1, ch2) : nextCh;
-                        nextCh = (nextCh == null && fittingRules.ishRule3()) ? hRule3_Smush(ch1, ch2) : nextCh;
-                        nextCh = (nextCh == null && fittingRules.ishRule4()) ? hRule4_Smush(ch1, ch2) : nextCh;
-                        nextCh = (nextCh == null && fittingRules.ishRule5()) ? hRule5_Smush(ch1, ch2) : nextCh;
-                        nextCh = (nextCh == null && fittingRules.ishRule6()) ? hRule6_Smush(ch1, ch2, hardblank) : nextCh;
-                        nextCh = (nextCh == null) ? uni_Smush(ch1, ch2, hardblank) : nextCh;
+                        Character nextCh = (fittingRules.isHorizontalRule1Enabled()) ? SmushingRules.hRule1_Smush(ch1, ch2, hardblank) : null;
+                        nextCh = (nextCh == null && fittingRules.isHorizontalRule2Enabled()) ? SmushingRules.hRule2_Smush(ch1, ch2) : nextCh;
+                        nextCh = (nextCh == null && fittingRules.isHorizontalRule3Enabled()) ? SmushingRules.hRule3_Smush(ch1, ch2) : nextCh;
+                        nextCh = (nextCh == null && fittingRules.isHorizontalRule4Enabled()) ? SmushingRules.hRule4_Smush(ch1, ch2) : nextCh;
+                        nextCh = (nextCh == null && fittingRules.isHorizontalRule5Enabled()) ? SmushingRules.hRule5_Smush(ch1, ch2) : nextCh;
+                        nextCh = (nextCh == null && fittingRules.isHorizontalRule6Enabled()) ? SmushingRules.hRule6_Smush(ch1, ch2, hardblank) : nextCh;
+                        nextCh = (nextCh == null) ? SmushingRules.uni_Smush(ch1, ch2, hardblank) : nextCh;
                         piece2 += nextCh;
                     }
                 } else {
-                    piece2 += uni_Smush(ch1, ch2, hardblank);
+                    piece2 += SmushingRules.uni_Smush(ch1, ch2, hardblank);
                 }
             }
 
             if (overlap >= len2) {
                 piece3 = "";
             } else {
-                piece3 = String.valueOf(txt2).substring(overlap, overlap + Math.max(0, len2 - overlap));
+                piece3 = txt2 != null ? String.valueOf(txt2).substring(overlap, overlap + Math.max(0, len2 - overlap)) : "";
             }
             outputFig[i] = (piece1 + piece2 + piece3).toCharArray();
 
@@ -261,45 +260,42 @@ public class FigletFont {
     }
 
     private int getHorizontalSmushLength(char[] txt1, char[] txt2) {
-        if (fittingRules.gethLayout() == FittingRules.LAYOUT.FULL_WIDTH) {
+        if (fittingRules.isHorizontalFullWidthEnabled()) {
             return 0;
         }
         int len1 = txt1 != null ? txt1.length : 0;
         int len2 = txt2 != null ? txt2.length : 0;
-        int maxDist = len1;
         int curDist = 1;
         boolean breakAfter = false;
-        boolean validSmush = false;
         if (len1 == 0) {
             return 0;
         }
 
         distCal:
-        while (curDist <= maxDist) {
+        while (curDist <= len1) {
             String seg1 = String.valueOf(txt1).substring(len1 - curDist, (len1 - curDist) + curDist);
             String seg2 = String.valueOf(txt2).substring(0, Math.min(curDist, len2));
             for (int ii = 0; ii < Math.min(curDist, len2); ii++) {
                 char ch1 = seg1.substring(ii, ii + 1).charAt(0);
                 char ch2 = seg2.substring(ii, ii + 1).charAt(0);
                 if (ch1 != ' ' && ch2 != ' ') {
-                    if (fittingRules.gethLayout() != FittingRules.LAYOUT.FITTING) {
+                    if (fittingRules.isHorizontalFittingEnabled()) {
                         curDist = curDist - 1;
                         break distCal;
-                    } else if (fittingRules.gethLayout() != FittingRules.LAYOUT.SMUSHING) {
+                    } else if (fittingRules.isHorizontalFittingEnabled()) {
                         if (ch1 == hardblank || ch2 == hardblank) {
                             curDist = curDist - 1; // universal smushing does not smush hardblanks
                         }
                         break distCal;
                     } else {
                         breakAfter = true; // we know we need to break, but we need to check if our smushing rules will allow us to smush the overlapped characters
-                        validSmush = false; // the below checks will let us know if we can smush these characters
 
-                        validSmush = (fittingRules.ishRule1()) ? hRule1_Smush(ch1, ch2, hardblank) != null : validSmush;
-                        validSmush = (!validSmush && fittingRules.ishRule2()) ? hRule2_Smush(ch1, ch2) != null : validSmush;
-                        validSmush = (!validSmush && fittingRules.ishRule3()) ? hRule3_Smush(ch1, ch2) != null : validSmush;
-                        validSmush = (!validSmush && fittingRules.ishRule4()) ? hRule4_Smush(ch1, ch2) != null : validSmush;
-                        validSmush = (!validSmush && fittingRules.ishRule5()) ? hRule5_Smush(ch1, ch2) != null : validSmush;
-                        validSmush = (!validSmush && fittingRules.ishRule6()) ? hRule6_Smush(ch1, ch2, hardblank) != null : validSmush;
+                        boolean validSmush = (fittingRules.isHorizontalRule1Enabled()) && SmushingRules.hRule1_Smush(ch1, ch2, hardblank) != null;
+                        validSmush = (!validSmush && fittingRules.isHorizontalRule2Enabled()) ? SmushingRules.hRule2_Smush(ch1, ch2) != null : validSmush;
+                        validSmush = (!validSmush && fittingRules.isHorizontalRule3Enabled()) ? SmushingRules.hRule3_Smush(ch1, ch2) != null : validSmush;
+                        validSmush = (!validSmush && fittingRules.isHorizontalRule4Enabled()) ? SmushingRules.hRule4_Smush(ch1, ch2) != null : validSmush;
+                        validSmush = (!validSmush && fittingRules.isHorizontalRule5Enabled()) ? SmushingRules.hRule5_Smush(ch1, ch2) != null : validSmush;
+                        validSmush = (!validSmush && fittingRules.isHorizontalRule6Enabled()) ? SmushingRules.hRule6_Smush(ch1, ch2, hardblank) != null : validSmush;
 
                         if (!validSmush) {
                             curDist = curDist - 1;
@@ -313,50 +309,50 @@ public class FigletFont {
             }
             curDist++;
         }
-        return Math.min(maxDist, curDist);
+        return Math.min(len1, curDist);
     }
 
-    private CAN_VSMUSH canVerticalSmush(char[] txt1, char[] txt2) {
-        if (fittingRules.getvLayout() == FittingRules.LAYOUT.FULL_WIDTH) {
-            return CAN_VSMUSH.INVAID;
+    private CAN_VERTICAL_SMUSH canVerticalSmush(char[] txt1, char[] txt2) {
+        if (fittingRules.isVerticalFullWidthEnabled()) {
+            return CAN_VERTICAL_SMUSH.INVALID;
         }
-        int len = Math.min(txt1 != null ? txt1.length : 0, txt2 != null ? txt1.length : 0);
+        int len1 = txt1 != null ? txt1.length : 0;
+        int len2 = txt2 != null ? txt2.length : 0;
+        int len = Math.min(len1,len2);
         char ch1, ch2;
         boolean endSmush = false;
-        boolean validSmush;
-        if (len == 0) {
-            return CAN_VSMUSH.INVAID;
+        if (len1 == 0 || len2 == 0) {
+            return CAN_VERTICAL_SMUSH.INVALID;
         }
 
         for (int ii = 0; ii < len; ii++) {
             ch1 = txt1[ii];
             ch2 = txt2[ii];
             if (ch1 != ' ' && ch2 != ' ') {
-                if (fittingRules.getvLayout() == FittingRules.LAYOUT.FITTING) {
-                    return CAN_VSMUSH.INVAID;
-                } else if (fittingRules.getvLayout() == FittingRules.LAYOUT.SMUSHING) {
-                    return CAN_VSMUSH.END;
+                if (fittingRules.isVerticalFittingEnabled()) {
+                    return CAN_VERTICAL_SMUSH.INVALID;
+                } else if (fittingRules.isVerticalSmushingEnabled()) {
+                    return CAN_VERTICAL_SMUSH.END;
                 } else {
-                    if (vRule5_Smush(ch1, ch2) != null) {
-                        endSmush = endSmush || false;
+                    if (SmushingRules.vRule5_Smush(ch1, ch2) != null) {
+                        endSmush = false;
                         continue;
                     } // rule 5 allow for "super" smushing, but only if we're not already ending this smush
-                    validSmush = false;
-                    validSmush = (fittingRules.isvRule1()) ? vRule1_Smush(ch1, ch2) != null : validSmush;
-                    validSmush = (!validSmush && fittingRules.isvRule2()) ? vRule2_Smush(ch1, ch2) != null : validSmush;
-                    validSmush = (!validSmush && fittingRules.isvRule3()) ? vRule3_Smush(ch1, ch2) != null : validSmush;
-                    validSmush = (!validSmush && fittingRules.isvRule4()) ? vRule4_Smush(ch1, ch2) != null : validSmush;
+                    boolean validSmush = (fittingRules.isVerticalRule1Enabled()) && SmushingRules.vRule1_Smush(ch1, ch2) != null;
+                    validSmush = (!validSmush && fittingRules.isVerticalRule2Enabled()) ? SmushingRules.vRule2_Smush(ch1, ch2) != null : validSmush;
+                    validSmush = (!validSmush && fittingRules.isVerticalRule3Enabled()) ? SmushingRules.vRule3_Smush(ch1, ch2) != null : validSmush;
+                    validSmush = (!validSmush && fittingRules.isVerticalRule4Enabled()) ? SmushingRules.vRule4_Smush(ch1, ch2) != null : validSmush;
                     endSmush = true;
                     if (!validSmush) {
-                        return CAN_VSMUSH.INVAID;
+                        return CAN_VERTICAL_SMUSH.INVALID;
                     }
                 }
             }
         }
         if (endSmush) {
-            return CAN_VSMUSH.END;
+            return CAN_VERTICAL_SMUSH.END;
         } else {
-            return CAN_VSMUSH.VALID;
+            return CAN_VERTICAL_SMUSH.VALID;
         }
     }
 
@@ -376,37 +372,36 @@ public class FigletFont {
     private int getVerticalSmushDist(char[][] lines1, char[][] lines2) {
         int maxDist = lines1.length;
         int len1 = lines1.length;
-        int len2 = lines2.length;
         int curDist = 1;
         while (curDist <= maxDist) {
 
             char[][] subLines1 = Arrays.copyOfRange(lines1, Math.max(0, len1 - curDist),len1);
             char[][] subLines2 = Arrays.copyOfRange(lines2, 0, Math.min(maxDist, curDist));
 
-            int slen = subLines2.length;//TODO:check this
-            CAN_VSMUSH result = null;
+            int slen = subLines2.length;
+            CAN_VERTICAL_SMUSH result = null;
             for (int ii = 0; ii < slen; ii++) {
-                CAN_VSMUSH ret = canVerticalSmush(subLines1[ii], subLines2[ii]);
-                if (ret == CAN_VSMUSH.END) {
+                CAN_VERTICAL_SMUSH ret = canVerticalSmush(subLines1[ii], subLines2[ii]);
+                if (ret == CAN_VERTICAL_SMUSH.END) {
                     result = ret;
-                } else if (ret == CAN_VSMUSH.INVAID) {
+                } else if (ret == CAN_VERTICAL_SMUSH.INVALID) {
                     result = ret;
                     break;
                 } else {
                     if (result == null) {
-                        result = CAN_VSMUSH.VALID;
+                        result = CAN_VERTICAL_SMUSH.VALID;
                     }
                 }
             }
 
-            if (result == CAN_VSMUSH.INVAID) {
+            if (result == CAN_VERTICAL_SMUSH.INVALID) {
                 curDist--;
                 break;
             }
-            if (result == CAN_VSMUSH.END) {
+            if (result == CAN_VERTICAL_SMUSH.END) {
                 break;
             }
-            if (result == CAN_VSMUSH.VALID) {
+            if (result == CAN_VERTICAL_SMUSH.VALID) {
                 curDist++;
             }
         }
@@ -421,21 +416,20 @@ public class FigletFont {
             char ch1 = line1[ii];
             char ch2 = line2[ii];
             if (ch1 != ' ' && ch2 != ' ') {
-                if (fittingRules.getvLayout() == FittingRules.LAYOUT.FITTING) {
-                    result[ii] = uni_Smush(ch1, ch2, hardblank);
-                } else if (fittingRules.getvLayout() == FittingRules.LAYOUT.SMUSHING) {
-                    result[ii] = uni_Smush(ch1, ch2, hardblank);
+                if (fittingRules.isVerticalFittingEnabled()) {
+                    result[ii] = SmushingRules.uni_Smush(ch1, ch2, hardblank);
+                } else if (fittingRules.isVerticalSmushingEnabled()) {
+                    result[ii] = SmushingRules.uni_Smush(ch1, ch2, hardblank);
                 } else {
-                    Character validSmush = null;
-                    validSmush = (fittingRules.isvRule5()) ? vRule5_Smush(ch1, ch2) : validSmush;
-                    validSmush = (validSmush != null && fittingRules.isvRule1()) ? vRule1_Smush(ch1, ch2) : validSmush;
-                    validSmush = (validSmush != null && fittingRules.isvRule2()) ? vRule2_Smush(ch1, ch2) : validSmush;
-                    validSmush = (validSmush != null && fittingRules.isvRule3()) ? vRule3_Smush(ch1, ch2) : validSmush;
-                    validSmush = (validSmush != null && fittingRules.isvRule4()) ? vRule4_Smush(ch1, ch2) : validSmush;
+                    Character validSmush = (fittingRules.isVerticalRule5Enabled()) ? SmushingRules.vRule5_Smush(ch1, ch2) : null;
+                    validSmush = (validSmush != null && fittingRules.isVerticalRule1Enabled()) ? SmushingRules.vRule1_Smush(ch1, ch2) : validSmush;
+                    validSmush = (validSmush != null && fittingRules.isVerticalRule2Enabled()) ? SmushingRules.vRule2_Smush(ch1, ch2) : validSmush;
+                    validSmush = (validSmush != null && fittingRules.isVerticalRule3Enabled()) ? SmushingRules.vRule3_Smush(ch1, ch2) : validSmush;
+                    validSmush = (validSmush != null && fittingRules.isVerticalRule4Enabled()) ? SmushingRules.vRule4_Smush(ch1, ch2) : validSmush;
                     result[ii] = validSmush;
                 }
             } else {
-                result[ii] = uni_Smush(ch1, ch2, hardblank);
+                result[ii] = SmushingRules.uni_Smush(ch1, ch2, hardblank);
             }
         }
         return result;
@@ -451,7 +445,7 @@ public class FigletFont {
         char[][] piece3;
 
         int len = piece2_1.length;
-        char[] line = null;
+        char[] line;
         for (int ii = 0; ii < len; ii++) {
             if (ii >= len2) {
                 line = piece2_1[ii];
@@ -477,227 +471,12 @@ public class FigletFont {
             padding += " ";
         }
         for (int ii = 0; ii < len; ii++) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(lines[ii]);
-            sb.append(padding);
-            lines[ii] = sb.toString().toCharArray();
+            String line = String.valueOf(lines[ii]) + padding;
+            lines[ii] = line.toCharArray();
         }
         return lines;
     }
 
-    /*
-        Rule 1: EQUAL CHARACTER SMUSHING (code value 1)
-
-        Two sub-characters are smushed into a single sub-character
-        if they are the same.  This rule does not smush
-        hardblanks.  (See rule 6 on hardblanks below)
-    */
-    private Character hRule1_Smush(char ch1, char ch2, char hardBlank) {
-        if (ch1 == ch2 && ch1 != hardBlank) {
-            return ch1;
-        }
-        return null;
-    }
-
-    /*
-        Rule 2: UNDERSCORE SMUSHING (code value 2)
-
-        An underscore ("_") will be replaced by any of: "|", "/",
-        "\", "[", "]", "{", "}", "(", ")", "<" or ">".
-    */
-    private Character hRule2_Smush(char ch1, char ch2) {
-        char[] rule2Str = "|/\\[]{}()<>".toCharArray();
-        if (ch1 == '_') {
-            if (Arrays.binarySearch(rule2Str, ch2) != -1) {
-                return ch2;
-            }
-        } else if (ch2 == '_') {
-            if (Arrays.binarySearch(rule2Str, ch1) != -1) {
-                return ch1;
-            }
-        }
-        return null;
-    }
-
-    /*
-        Rule 3: HIERARCHY SMUSHING (code value 4)
-
-        A hierarchy of six classes is used: "|", "/\", "[]", "{}",
-        "()", and "<>".  When two smushing sub-characters are
-        from different classes, the one from the latter class
-        will be used.
-    */
-    private Character hRule3_Smush(char ch1, char ch2) {
-        char[] rule3Classes = "|/\\[]{}()<>".toCharArray();
-        int r3_pos1 = Arrays.binarySearch(rule3Classes, ch1);
-        int r3_pos2 = Arrays.binarySearch(rule3Classes, ch2);
-        if (r3_pos1 != -1 && r3_pos2 != -1) {
-            if (r3_pos1 != r3_pos2 && Math.abs(r3_pos1 - r3_pos2) != 1) {
-                return rule3Classes[Math.max(r3_pos1, r3_pos2)];
-            }
-        }
-        return null;
-    }
-
-    /*
-        Rule 4: OPPOSITE PAIR SMUSHING (code value 8)
-
-        Smushes opposing brackets ("[]" or "]["), braces ("{}" or
-        "}{") and parentheses ("()" or ")(") together, replacing
-        any such pair with a vertical bar ("|").
-    */
-    private Character hRule4_Smush(char ch1, char ch2) {
-        char[] rule4Str = "[]{}()".toCharArray();
-        int r4_pos1 = Arrays.binarySearch(rule4Str, ch1);
-        int r4_pos2 = Arrays.binarySearch(rule4Str, ch2);
-        if (r4_pos1 != -1 && r4_pos2 != -1) {
-            if (Math.abs(r4_pos1 - r4_pos2) <= 1) {
-                return '|';
-            }
-        }
-        return null;
-    }
-
-    /*
-        Rule 5: BIG X SMUSHING (code value 16)
-
-        Smushes "/\" into "|", "\/" into "Y", and "><" into "X".
-        Note that "<>" is not smushed in any way by this rule.
-        The name "BIG X" is historical; originally all three pairs
-        were smushed into "X".
-    */
-    private Character hRule5_Smush(char ch1, char ch2) {
-        char[] rule5Str = "/\\ \\/ ><".toCharArray();
-        Map<Character, Character> rule5Hash = new HashMap<Character, Character>();
-        rule5Hash.put('0', '|');
-        rule5Hash.put('3', 'Y');
-        rule5Hash.put('6', 'X');
-        int r5_pos1 = Arrays.binarySearch(rule5Str, ch1);
-        int r5_pos2 = Arrays.binarySearch(rule5Str, ch2);
-        if (r5_pos1 != -1 && r5_pos2 != -1) {
-            if ((r5_pos2 - r5_pos1) == 1) {
-                return rule5Hash.get(r5_pos1);
-            }
-        }
-        return null;
-    }
-
-    /*
-        Rule 6: HARDBLANK SMUSHING (code value 32)
-
-        Smushes two hardblanks together, replacing them with a
-        single hardblank.  (See "Hardblanks" below.)
-    */
-    private Character hRule6_Smush(char ch1, char ch2, char hardBlank) {
-        if (ch1 == hardBlank && ch2 == hardBlank) {
-            return hardBlank;
-        }
-        return null;
-    }
-
-    /*
-        Rule 1: EQUAL CHARACTER SMUSHING (code value 256)
-
-            Same as horizontal smushing rule 1.
-    */
-    private Character vRule1_Smush(char ch1, char ch2) {
-        if (ch1 == ch2) {
-            return ch1;
-        }
-        return null;
-    }
-
-    /*
-        Rule 2: UNDERSCORE SMUSHING (code value 512)
-
-        Same as horizontal smushing rule 2.
-    */
-    private Character vRule2_Smush(char ch1, char ch2) {
-        char[] rule2Str = "|/\\[]{}()<>".toCharArray();
-        if (ch1 == '_') {
-            if (Arrays.binarySearch(rule2Str,ch2) != -1) {
-                return ch2;
-            }
-        } else if (ch2 == '_') {
-            if (Arrays.binarySearch(rule2Str,ch1) != -1) {
-                return ch1;
-            }
-        }
-        return null;
-    }
-
-    /*
-        Rule 3: HIERARCHY SMUSHING (code value 1024)
-
-            Same as horizontal smushing rule 3.
-    */
-    private Character vRule3_Smush(char ch1, char ch2) {
-        char[] rule3Classes = "|/\\[]{}()<>".toCharArray();
-        int r3_pos1 = Arrays.binarySearch(rule3Classes, ch1);
-        int r3_pos2 = Arrays.binarySearch(rule3Classes, ch2);
-        if (r3_pos1 != -1 && r3_pos2 != -1) {
-            if (r3_pos1 != r3_pos2 && Math.abs(r3_pos1 - r3_pos2) != 1) {
-                return rule3Classes[Math.max(r3_pos1, r3_pos2)];
-            }
-        }
-        return null;
-    }
-
-    /*
-        Rule 4: HORIZONTAL LINE SMUSHING (code value 2048)
-
-        Smushes stacked pairs of "-" and "_", replacing them with
-        a single "=" sub-character.  It does not matter which is
-        found above the other.  Note that vertical smushing rule 1
-        will smush IDENTICAL pairs of horizontal lines, while this
-        rule smushes horizontal lines consisting of DIFFERENT
-        sub-characters.
-    */
-    private Character vRule4_Smush(char ch1, char ch2) {
-        if ((ch1 == '-' && ch2 == '_') || (ch1 == '_' && ch2 == '-')) {
-            return '=';
-        }
-        return null;
-    }
-
-    /*
-        Rule 5: VERTICAL LINE SUPERSMUSHING (code value 4096)
-
-        This one rule is different from all others, in that it
-        "supersmushes" vertical lines consisting of several
-        vertical bars ("|").  This creates the illusion that
-        FIGcharacters have slid vertically against each other.
-        Supersmushing continues until any sub-characters other
-        than "|" would have to be smushed.  Supersmushing can
-        produce impressive results, but it is seldom possible,
-        since other sub-characters would usually have to be
-        considered for smushing as soon as any such stacked
-        vertical lines are encountered.
-    */
-    private Character vRule5_Smush(char ch1, char ch2) {
-        if (ch1 == '|' && ch2 == '|') {
-            return '|';
-        }
-        return null;
-    }
-
-    /*
-        Universal smushing simply overrides the sub-character from the
-        earlier FIGcharacter with the sub-character from the later
-        FIGcharacter.  This produces an "overlapping" effect with some
-        FIGfonts, wherin the latter FIGcharacter may appear to be "in
-        front".
-    */
-
-    private Character uni_Smush(char ch1, char ch2, char hardBlank) {
-        if (ch2 == ' ') {
-            return ch1;
-        } else if (ch2 == hardBlank && ch1 != ' ') {
-            return ch1;
-        } else {
-            return ch2;
-        }
-    }
 
     /**
      * Covert One Line no longer applicable, mutli-line support added.
