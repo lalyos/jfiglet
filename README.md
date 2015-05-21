@@ -94,12 +94,12 @@ Figlet font:
 Smushing will use the authors preference by default.
 
 ```
-       _  ____ _         __       __
-      (_)/ __/(_)____ _ / /___   / /_
-     / // /_ / // __ `// // _ \ / __/
-    / // __// // /_/ // //  __// /_
- __/ //_/  /_/ \__, //_/ \___/ \__/
-/___/         /____/
+       _ _____       __     __
+      (_) __(_)___ _/ /__  / /_
+     / / /_/ / __ `/ / _ \/ __/
+    / / __/ / /_/ / /  __/ /_
+ __/ /_/ /_/\__, /_/\___/\__/
+/___/      /____/
 ```
 
 The authors preference can also be overridden, in the following method;

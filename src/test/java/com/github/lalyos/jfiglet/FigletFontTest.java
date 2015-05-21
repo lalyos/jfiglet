@@ -11,6 +11,7 @@ public class FigletFontTest {
         String asciiArt = new FigletFont(
                 FigletFontTest.class.getClassLoader().getResourceAsStream("slant.flf"))
                 .convert("jfiglet");
+        System.out.println(asciiArt);
         assertEquals("       _ _____       __     __ \n" +
                         "      (_) __(_)___ _/ /__  / /_\n" +
                         "     / / /_/ / __ `/ / _ \\/ __/\n" +
