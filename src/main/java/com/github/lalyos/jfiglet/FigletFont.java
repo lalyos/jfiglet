@@ -75,12 +75,16 @@ public class FigletFont {
     }
 
     public FigletFont overrideHorizontalLayout(FittingRules.OVERRIDE_LAYOUT layout) {
-        fittingRules.overrideHorizontalLayout(layout);
+        if (layout != null) {
+            fittingRules.overrideHorizontalLayout(layout);
+        }
         return this;
     }
 
     public FigletFont overrideVerticalLayout(FittingRules.OVERRIDE_LAYOUT layout) {
-        fittingRules.overrideVerticalLayout(layout);
+        if (layout != null) {
+            fittingRules.overrideVerticalLayout(layout);
+        }
         return this;
     }
 
@@ -526,20 +530,33 @@ public class FigletFont {
         return convertOneLine(fontStream, message);
     }
 
+    public static String convertMessage(InputStream fontFileStream, String message, FittingRules.OVERRIDE_LAYOUT horizontalLayout, FittingRules.OVERRIDE_LAYOUT verticalLayout) throws IOException {
+        return new FigletFont(fontFileStream).overrideHorizontalLayout(horizontalLayout).overrideVerticalLayout(verticalLayout).convert(message);
+    }
+
     public static String convertMessage(InputStream fontFileStream, String message) throws IOException {
-        return new FigletFont(fontFileStream).convert(message);
+        return convertMessage(fontFileStream,message, FittingRules.OVERRIDE_LAYOUT.DEFAULT, FittingRules.OVERRIDE_LAYOUT.DEFAULT);
+    }
+
+    public static String convertMessage(String message, FittingRules.OVERRIDE_LAYOUT horizontalLayout, FittingRules.OVERRIDE_LAYOUT verticalLayout) throws IOException {
+        return convertMessage(FigletFont.class.getClassLoader().getResourceAsStream("standard.flf"), message, horizontalLayout, verticalLayout);
     }
 
     public static String convertMessage(String message) throws IOException {
-        return convertMessage(FigletFont.class.getClassLoader().getResourceAsStream("standard.flf"), message);
+        return convertMessage(message, FittingRules.OVERRIDE_LAYOUT.DEFAULT, FittingRules.OVERRIDE_LAYOUT.DEFAULT);
     }
 
+    public static String convertMessage(File fontFile, String message, FittingRules.OVERRIDE_LAYOUT horizontalLayout, FittingRules.OVERRIDE_LAYOUT verticalLayout) throws IOException {
+        return convertMessage(new FileInputStream(fontFile), message,horizontalLayout, verticalLayout );
+    }
 
     public static String convertMessage(File fontFile, String message) throws IOException {
-        return convertMessage(new FileInputStream(fontFile), message);
+        return convertMessage(fontFile, message, FittingRules.OVERRIDE_LAYOUT.DEFAULT, FittingRules.OVERRIDE_LAYOUT.DEFAULT);
     }
 
-    public static String convertMessage(String fontPath, String message) throws IOException {
+
+
+    public static String convertMessage(String fontPath, String message, FittingRules.OVERRIDE_LAYOUT horizontalLayout, FittingRules.OVERRIDE_LAYOUT verticalLayout) throws IOException {
         InputStream fontStream;
         if (fontPath.startsWith("classpath:")) {
             fontStream = FigletFont.class.getResourceAsStream(fontPath.substring(10));
@@ -548,6 +565,10 @@ public class FigletFont {
         } else {
             fontStream = new FileInputStream(fontPath);
         }
-        return convertMessage(fontStream, message);
+        return convertMessage(fontStream, message, horizontalLayout, verticalLayout);
+    }
+
+    public static String convertMessage(String fontPath, String message) throws IOException {
+        return convertMessage(fontPath,message, FittingRules.OVERRIDE_LAYOUT.DEFAULT, FittingRules.OVERRIDE_LAYOUT.DEFAULT);
     }
 }

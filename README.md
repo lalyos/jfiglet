@@ -79,16 +79,20 @@ public class App {
 
 You can use the jar from the central repo, or use the latest development version from sourcecode;
 ```
-Usage: java -jar jfiglet.jar [-f FLF] MESSAGE
+Usage: java -jar jfiglet.jar [-f FLF] [-h HORIZONTAL SMUSHING] [-v VERTICAL SMUSHING] MESSAGE
 Prints MESSAGE to stdout as ASCII art using Figlet font
-Example: java -jar jfiglet.jar -f "/opt/myfont.flf" "Hello World"
+Example: java -jar jfiglet.jar -f "/opt/myfont.flf" -h "full_width" -v "fitting" "Hello World"
 
 
-Figlet font:
-  -f  FLF is font file location within file system, java classpath or www.
-      When FLF starts with `http://'|`https://' file will be fetched from WWW,
-      if FLF starts from `classpath:' then it will be looked for in JRE classpath,
-      otherwise FLF if path to file in file system
+Figlet font arguments:
+  -f  (Optional) FLF is font file location within file system, java classpath or www.
+                 When FLF starts with `http://'|`https://' file will be fetched from WWW,
+                 if FLF starts with `classpath:' then it will be looked for in JRE classpath,
+                 otherwise FLF is path to FLF file in file system.
+  -h  (Optional) Used to override the horizontal smushing of the font, available options:
+                 [default, controlled_smushing, smushing, fitting, full_width]
+  -v  (Optional) Used to override the vertical smushing of the font, available options:
+                 [default, controlled_smushing, smushing, fitting, full_width]
 ```
 
 ## Usage - smushing

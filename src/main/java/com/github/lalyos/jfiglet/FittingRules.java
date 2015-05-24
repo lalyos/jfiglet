@@ -7,9 +7,10 @@ import java.util.Map;
 public class FittingRules {
 
     public enum OVERRIDE_LAYOUT{
-        FITTING,
+        DEFAULT,
         CONTROLLED_SMUSHING,
         SMUSHING,
+        FITTING,
         FULL_WIDTH
     }
 
@@ -96,6 +97,9 @@ public class FittingRules {
     }
 
     public void overrideHorizontalLayout(OVERRIDE_LAYOUT layout){
+        if (layout == OVERRIDE_LAYOUT.DEFAULT){
+            return;
+        }
         properties.put(KEY_HORIZONTAL_FULL_WIDTH, false);
         properties.put(KEY_HORIZONTAL_FITTING, false);
         properties.put(KEY_HORIZONTAL_SMUSHING, false);
@@ -127,6 +131,9 @@ public class FittingRules {
     }
 
     public void overrideVerticalLayout(OVERRIDE_LAYOUT layout){
+        if (layout == OVERRIDE_LAYOUT.DEFAULT){
+            return;
+        }
         properties.put(KEY_VERTICAL_FULL_WIDTH, false);
         properties.put(KEY_VERTICAL_FITTING, false);
         properties.put(KEY_VERTICAL_SMUSHING, false);
