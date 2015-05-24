@@ -110,8 +110,8 @@ import com.github.lalyos.jfiglet.FigletFont;
 public class App {
   public static void main(String[] args) {
     String asciiArt = new FigletFont()
-        .overridehLayout(FittingRules.LAYOUT.FULL_WIDTH)
-        .overridevLayout(FittingRules.LAYOUT.CONTROLLED_SMUSHING)
+        .overrideHorizontalLayout(FittingRules.LAYOUT.FULL_WIDTH)
+        .overrideVerticalLayout(FittingRules.LAYOUT.CONTROLLED_SMUSHING)
         .convert("jfiglet");
     System.out.println(asciiArt);
   }
