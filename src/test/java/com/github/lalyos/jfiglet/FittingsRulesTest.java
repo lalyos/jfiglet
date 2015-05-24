@@ -214,6 +214,46 @@ public class FittingsRulesTest {
         assertFalse(fittingRules.isHorizontalFittingEnabled());
         assertFalse(fittingRules.isVerticalFittingEnabled());    
     }
+    @Test
+    public void overrideHorizontalLayoutDefaultTest() {
+        FittingRules fittingRules = new FittingRules(0,24511);
+        assertTrue(fittingRules.isHorizontalRule1Enabled());
+        assertTrue(fittingRules.isHorizontalRule2Enabled());
+        assertTrue(fittingRules.isHorizontalRule3Enabled());
+        assertTrue(fittingRules.isHorizontalRule4Enabled());
+        assertTrue(fittingRules.isHorizontalRule5Enabled());
+        assertTrue(fittingRules.isHorizontalRule6Enabled());
+        assertTrue(fittingRules.isVerticalRule1Enabled());
+        assertTrue(fittingRules.isVerticalRule2Enabled());
+        assertTrue(fittingRules.isVerticalRule3Enabled());
+        assertTrue(fittingRules.isVerticalRule4Enabled());
+        assertTrue(fittingRules.isVerticalRule5Enabled());
+        assertFalse(fittingRules.isHorizontalFullWidthEnabled());
+        assertFalse(fittingRules.isVerticalFullWidthEnabled());
+        assertFalse(fittingRules.isHorizontalSmushingEnabled());
+        assertFalse(fittingRules.isVerticalSmushingEnabled());
+        assertFalse(fittingRules.isHorizontalFittingEnabled());
+        assertFalse(fittingRules.isVerticalFittingEnabled());
+        fittingRules.overrideHorizontalLayout(FittingRules.OVERRIDE_LAYOUT.DEFAULT);
+        //Nothing should have changed
+        assertTrue(fittingRules.isHorizontalRule1Enabled());
+        assertTrue(fittingRules.isHorizontalRule2Enabled());
+        assertTrue(fittingRules.isHorizontalRule3Enabled());
+        assertTrue(fittingRules.isHorizontalRule4Enabled());
+        assertTrue(fittingRules.isHorizontalRule5Enabled());
+        assertTrue(fittingRules.isHorizontalRule6Enabled());
+        assertTrue(fittingRules.isVerticalRule1Enabled());
+        assertTrue(fittingRules.isVerticalRule2Enabled());
+        assertTrue(fittingRules.isVerticalRule3Enabled());
+        assertTrue(fittingRules.isVerticalRule4Enabled());
+        assertTrue(fittingRules.isVerticalRule5Enabled());
+        assertFalse(fittingRules.isHorizontalFullWidthEnabled());
+        assertFalse(fittingRules.isVerticalFullWidthEnabled());
+        assertFalse(fittingRules.isHorizontalSmushingEnabled());
+        assertFalse(fittingRules.isVerticalSmushingEnabled());
+        assertFalse(fittingRules.isHorizontalFittingEnabled());
+        assertFalse(fittingRules.isVerticalFittingEnabled());
+    }
 
     @Test
     public void overrideHorizontalLayoutFittingTest() {
@@ -386,6 +426,48 @@ public class FittingsRulesTest {
         assertFalse(fittingRules.isHorizontalFittingEnabled());
         assertFalse(fittingRules.isVerticalFittingEnabled());    
     }
+    @Test
+    public void overrideVerticalLayoutDefaultTest() {
+        FittingRules fittingRules = new FittingRules(0,24511);
+        assertTrue(fittingRules.isHorizontalRule1Enabled());
+        assertTrue(fittingRules.isHorizontalRule2Enabled());
+        assertTrue(fittingRules.isHorizontalRule3Enabled());
+        assertTrue(fittingRules.isHorizontalRule4Enabled());
+        assertTrue(fittingRules.isHorizontalRule5Enabled());
+        assertTrue(fittingRules.isHorizontalRule6Enabled());
+        assertTrue(fittingRules.isVerticalRule1Enabled());
+        assertTrue(fittingRules.isVerticalRule2Enabled());
+        assertTrue(fittingRules.isVerticalRule3Enabled());
+        assertTrue(fittingRules.isVerticalRule4Enabled());
+        assertTrue(fittingRules.isVerticalRule5Enabled());
+        assertFalse(fittingRules.isHorizontalFullWidthEnabled());
+        assertFalse(fittingRules.isVerticalFullWidthEnabled());
+        assertFalse(fittingRules.isHorizontalSmushingEnabled());
+        assertFalse(fittingRules.isVerticalSmushingEnabled());
+        assertFalse(fittingRules.isHorizontalFittingEnabled());
+        assertFalse(fittingRules.isVerticalFittingEnabled());
+        fittingRules.overrideVerticalLayout(FittingRules.OVERRIDE_LAYOUT.DEFAULT);
+        //Nothing should have changed
+        assertTrue(fittingRules.isHorizontalRule1Enabled());
+        assertTrue(fittingRules.isHorizontalRule2Enabled());
+        assertTrue(fittingRules.isHorizontalRule3Enabled());
+        assertTrue(fittingRules.isHorizontalRule4Enabled());
+        assertTrue(fittingRules.isHorizontalRule5Enabled());
+        assertTrue(fittingRules.isHorizontalRule6Enabled());
+        assertTrue(fittingRules.isVerticalRule1Enabled());
+        assertTrue(fittingRules.isVerticalRule2Enabled());
+        assertTrue(fittingRules.isVerticalRule3Enabled());
+        assertTrue(fittingRules.isVerticalRule4Enabled());
+        assertTrue(fittingRules.isVerticalRule5Enabled());
+        assertFalse(fittingRules.isHorizontalFullWidthEnabled());
+        assertFalse(fittingRules.isVerticalFullWidthEnabled());
+        assertFalse(fittingRules.isHorizontalSmushingEnabled());
+        assertFalse(fittingRules.isVerticalSmushingEnabled());
+        assertFalse(fittingRules.isHorizontalFittingEnabled());
+        assertFalse(fittingRules.isVerticalFittingEnabled());
+    }
+
+
     @Test
     public void overrideVerticalLayoutFittingTest() {
         FittingRules fittingRules = new FittingRules(0,24511);
