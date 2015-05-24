@@ -22,6 +22,21 @@ public class FigletFontTest {
 
     }
 
+    @Test
+    public void testConvertMessageJFigletRulez() throws Exception {
+        String asciiArt = new FigletFont(
+                FigletFontTest.class.getClassLoader().getResourceAsStream("slant.flf"))
+                .convert("jfiglet rulez!");
+        assertEquals("       _ _____       __     __                __           __\n" +
+                        "      (_) __(_)___ _/ /__  / /_   _______  __/ /__  ____  / /\n" +
+                        "     / / /_/ / __ `/ / _ \\/ __/  / ___/ / / / / _ \\/_  / / / \n" +
+                        "    / / __/ / /_/ / /  __/ /_   / /  / /_/ / /  __/ / /_/_/  \n" +
+                        " __/ /_/ /_/\\__, /_/\\___/\\__/  /_/   \\__,_/_/\\___/ /___(_)   \n" +
+                        "/___/      /____/                                            \n",
+                asciiArt.replaceAll("\r\n", "\n").replaceAll("\r", "\n"));
+
+    }
+
 
     @Test
     public void testConvertMessage() throws Exception {

@@ -164,7 +164,7 @@ public class FigletFont {
                         font[charCode][h] = new char[t];
                         for (int l = 0; l < t; l++) {
                             char a = dummyS.charAt(l);
-                            font[charCode][h][l] = (a == hardblank) ? ' ' : a;
+                            font[charCode][h][l] = a;
                         }
                     }
                 }
@@ -205,7 +205,7 @@ public class FigletFont {
             output = smushVerticalFigLines(output, figLines[ii]);
         }
         for (char[] line : output) {
-            result = result + String.valueOf(line) + System.getProperty("line.separator");
+            result = result + String.valueOf(line).replace(hardblank, ' ') + System.getProperty("line.separator");
         }
         return result;
     }
