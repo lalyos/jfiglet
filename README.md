@@ -28,8 +28,6 @@ you can use it from command line or from java code
 
 add the following maven dependency to your `pom.xml`
 
-_NOTE: The following dependency does not inlcude smushing, as it has not been released, see [from source](README.md#from-source)_
-
 ```
 <dependency>
 	<groupId>com.github.lalyos</groupId>
