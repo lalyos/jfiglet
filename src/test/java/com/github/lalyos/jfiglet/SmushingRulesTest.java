@@ -2,10 +2,23 @@ package com.github.lalyos.jfiglet;
 
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class SmushingRulesTest {
+
+    @Test
+    public void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<SmushingRules> constructor = SmushingRules.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
+    }
 
     @Test
     public void hRule1_SmushTest() {
@@ -167,9 +180,10 @@ public class SmushingRulesTest {
     @Test
     public void uni_smushTest(){
         final Character expected = 'a';
+        final Character expectedHB = '@';
         assertEquals(expected,SmushingRules.uni_Smush('a', ' ', '@'));
         assertEquals(expected,SmushingRules.uni_Smush('a', '@', '@'));
-        assertEquals(expected,SmushingRules.uni_Smush(' ', '@', '@'));
+        assertEquals(expectedHB,SmushingRules.uni_Smush(' ', '@', '@'));
         assertEquals(expected,SmushingRules.uni_Smush('b', 'a', '@'));
     }
 }

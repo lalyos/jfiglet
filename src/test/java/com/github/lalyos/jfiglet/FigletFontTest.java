@@ -53,26 +53,28 @@ public class FigletFontTest {
 
     }
 
-//    @Test
-//    public void testConvertMultilineSmush() throws Exception {
-//
-//        String asciiArt = new FigletFont(
-//                FigletFontTest.class.getClassLoader().getResourceAsStream("slant.flf"))
-//                .overrideHorizontalLayout(FittingRules.LAYOUT.FULL_WIDTH)
-//                .overrideVerticalLayout(FittingRules.LAYOUT.CONTROLLED_SMUSHING)
-//                .convert("ab\nc");
-//        assertEquals("            __  \n" +
-//                        "  ____ _   / /_ \n" +
-//                        " / __ `/  / __ \\\n" +
-//                        "/ /_/ /  / /_/ /\n" +
-//                        "\\__,_/  /_.___/ \n" +
-//                        "  _____         \n" +
-//                        " / ___/         \n" +
-//                        "/ /__           \n" +
-//                        "\\___/           \n" +
-//                        "                \n",
-//                asciiArt.replaceAll("\r\n", "\n").replaceAll("\r", "\n"));
-//
-//    }
+    @Test
+    public void testConvertMultilineSmush() throws Exception {
+
+        String asciiArt = new FigletFont(
+                FigletFontTest.class.getClassLoader().getResourceAsStream("slant.flf"))
+                .overrideHorizontalLayout(FittingRules.OVERRIDE_LAYOUT.FULL_WIDTH)
+                .overrideVerticalLayout(FittingRules.OVERRIDE_LAYOUT.FULL_WIDTH)
+                .convert("ab\nc");
+        assertEquals("            __  \n" +
+                        "  ____ _   / /_ \n" +
+                        " / __ `/  / __ \\\n" +
+                        "/ /_/ /  / /_/ /\n" +
+                        "\\__,_/  /_.___/ \n" +
+                        "                \n" +
+                        "                \n" +
+                        "  _____         \n" +
+                        " / ___/         \n" +
+                        "/ /__           \n" +
+                        "\\___/           \n" +
+                        "                \n",
+                asciiArt.replaceAll("\r\n", "\n").replaceAll("\r", "\n"));
+
+    }
 
 }

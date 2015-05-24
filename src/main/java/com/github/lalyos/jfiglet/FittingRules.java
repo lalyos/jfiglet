@@ -6,6 +6,13 @@ import java.util.Map;
 
 public class FittingRules {
 
+    public enum OVERRIDE_LAYOUT{
+        FITTING,
+        CONTROLLED_SMUSHING,
+        SMUSHING,
+        FULL_WIDTH
+    }
+
     private static String KEY_HORIZONTAL_FULL_WIDTH = "horizontalFullWidth";
     private static String KEY_HORIZONTAL_RULE1 = "horizontalRule1";
     private static String KEY_HORIZONTAL_RULE2 = "horizontalRule2";
@@ -50,26 +57,37 @@ public class FittingRules {
         while ( index < len ) {
             int code = (Integer)codes.keySet().toArray()[index];
             if (val >= code) {
-                val = val - code;
+
                 String key = codes.get(code);
-                if(! properties.containsKey(key)){
-                    properties.put(key,true);
+                if ((key.equals(KEY_VERTICAL_FITTING) && isVerticalSmushingEnabled()) || (key.equals(KEY_HORIZONTAL_FITTING) && isHorizontalSmushingEnabled())) {
+                    properties.put(key, false);
+                }else{
+                    properties.put(key, true);
+                    val = val - code;
                 }
             }
             index++;
         }
 
-        if(! isHorizontalFittingEnabled() && ! isHorizontalFullWidthEnabled() && ! isHorizontalSmushingEnabled()) {
+        if(! isHorizontalFittingEnabled() && ! isHorizontalSmushingEnabled()) {
             if (oldLayout == 0) {
                 properties.put(KEY_HORIZONTAL_FITTING, true);
-            } else if (oldLayout == -1) {
+            } else if (oldLayout == -1){
                 properties.put(KEY_HORIZONTAL_FULL_WIDTH, true);
+            } else {
+                if (isHorizontalRule1Enabled() || isHorizontalRule2Enabled() || isHorizontalRule3Enabled() || isHorizontalRule4Enabled() || isHorizontalRule5Enabled() || isHorizontalRule6Enabled()){
+                    properties.put(KEY_HORIZONTAL_SMUSHING, false);
+                } else {
+                    properties.put(KEY_HORIZONTAL_SMUSHING, true);
+                }
+                
             }
-        } else if (isHorizontalSmushingEnabled() &&(isHorizontalRule1Enabled() || isHorizontalRule2Enabled() || isHorizontalRule3Enabled() || isHorizontalRule4Enabled() || isHorizontalRule5Enabled() || isHorizontalRule6Enabled())) {
+        } else if (isHorizontalSmushingEnabled() && (isHorizontalRule1Enabled() || isHorizontalRule2Enabled() || isHorizontalRule3Enabled() || isHorizontalRule4Enabled() || isHorizontalRule5Enabled() || isHorizontalRule6Enabled())) {
             properties.put(KEY_HORIZONTAL_SMUSHING, false);
         }
 
-        if(! isVerticalFullWidthEnabled() && ! isVerticalSmushingEnabled() && ! isVerticalFittingEnabled() && !isVerticalRule1Enabled() && !isVerticalRule2Enabled() && !isVerticalRule3Enabled() && !isVerticalRule4Enabled() && !isVerticalRule5Enabled()) {
+
+        if(! isVerticalSmushingEnabled() && ! isVerticalFittingEnabled() && !isVerticalRule1Enabled() && !isVerticalRule2Enabled() && !isVerticalRule3Enabled() && !isVerticalRule4Enabled() && !isVerticalRule5Enabled()) {
             properties.put(KEY_VERTICAL_FULL_WIDTH, true);
         } else if (isVerticalSmushingEnabled() && (isVerticalRule1Enabled() || isVerticalRule2Enabled() || isVerticalRule3Enabled() || isVerticalRule4Enabled() || isVerticalRule5Enabled())){
             properties.put(KEY_VERTICAL_SMUSHING, false);
@@ -77,42 +95,65 @@ public class FittingRules {
 
     }
 
-//    public void overrideHorizontalLayout(LAYOUT layout){
-//        sethLayout(layout);
-//        if (layout == LAYOUT.CONTROLLED_SMUSHING) {
-//            properties.put("hRule1", true);
-//            properties.put("hRule2", true);
-//            properties.put("hRule3", true);
-//            properties.put("hRule4", true);
-//            properties.put("hRule5", true);
-//            properties.put("hRule6", true);
-//        } else {
-//            properties.put("hRule1", false);
-//            properties.put("hRule2", false);
-//            properties.put("hRule3", false);
-//            properties.put("hRule4", false);
-//            properties.put("hRule5", false);
-//            properties.put("hRule6", false);
-//        }
-//    }
-//
-//    public void overrideVerticalLayout(LAYOUT layout){
-//        setvLayout(layout);
-//        if (layout == LAYOUT.CONTROLLED_SMUSHING) {
-//            properties.put("vRule1", true);
-//            properties.put("vRule2", true);
-//            properties.put("vRule3", true);
-//            properties.put("vRule4", true);
-//            properties.put("vRule5", true);
-//        } else {
-//            properties.put("vRule1", false);
-//            properties.put("vRule2", false);
-//            properties.put("vRule3", false);
-//            properties.put("vRule4", false);
-//            properties.put("vRule5", false);
-//        }
-//    }
-//
+    public void overrideHorizontalLayout(OVERRIDE_LAYOUT layout){
+        properties.put(KEY_HORIZONTAL_FULL_WIDTH, false);
+        properties.put(KEY_HORIZONTAL_FITTING, false);
+        properties.put(KEY_HORIZONTAL_SMUSHING, false);
+        properties.put(KEY_HORIZONTAL_RULE1, false);
+        properties.put(KEY_HORIZONTAL_RULE2, false);
+        properties.put(KEY_HORIZONTAL_RULE3, false);
+        properties.put(KEY_HORIZONTAL_RULE4, false);
+        properties.put(KEY_HORIZONTAL_RULE5, false);
+        properties.put(KEY_HORIZONTAL_RULE6, false);
+        switch (layout){
+            case FITTING:
+                properties.put(KEY_HORIZONTAL_FITTING, true);
+                break;
+            case CONTROLLED_SMUSHING:
+                properties.put(KEY_HORIZONTAL_RULE1, true);
+                properties.put(KEY_HORIZONTAL_RULE2, true);
+                properties.put(KEY_HORIZONTAL_RULE3, true);
+                properties.put(KEY_HORIZONTAL_RULE4, true);
+                properties.put(KEY_HORIZONTAL_RULE5, true);
+                properties.put(KEY_HORIZONTAL_RULE6, true);
+                break;
+            case SMUSHING:
+                properties.put(KEY_HORIZONTAL_SMUSHING, true);
+                break;
+            case FULL_WIDTH:
+                properties.put(KEY_HORIZONTAL_FULL_WIDTH, true);
+                break;
+        }
+    }
+
+    public void overrideVerticalLayout(OVERRIDE_LAYOUT layout){
+        properties.put(KEY_VERTICAL_FULL_WIDTH, false);
+        properties.put(KEY_VERTICAL_FITTING, false);
+        properties.put(KEY_VERTICAL_SMUSHING, false);
+        properties.put(KEY_VERTICAL_RULE1, false);
+        properties.put(KEY_VERTICAL_RULE2, false);
+        properties.put(KEY_VERTICAL_RULE3, false);
+        properties.put(KEY_VERTICAL_RULE4, false);
+        properties.put(KEY_VERTICAL_RULE5, false);
+        switch (layout){
+            case FITTING:
+                properties.put(KEY_VERTICAL_FITTING, true);
+                break;
+            case CONTROLLED_SMUSHING:
+                properties.put(KEY_VERTICAL_RULE1, true);
+                properties.put(KEY_VERTICAL_RULE2, true);
+                properties.put(KEY_VERTICAL_RULE3, true);
+                properties.put(KEY_VERTICAL_RULE4, true);
+                properties.put(KEY_VERTICAL_RULE5, true);
+                break;
+            case SMUSHING:
+                properties.put(KEY_VERTICAL_SMUSHING, true);
+                break;
+            case FULL_WIDTH:
+                properties.put(KEY_VERTICAL_FULL_WIDTH, true);
+                break;
+        }    }
+
     public boolean isHorizontalFullWidthEnabled() {
         return (properties.containsKey(KEY_HORIZONTAL_FULL_WIDTH)) ? properties.get(KEY_HORIZONTAL_FULL_WIDTH) : false;
     }

@@ -74,15 +74,15 @@ public class FigletFont {
         }
     }
 
-//    public FigletFont overrideHorizontalLayout(FittingRules.LAYOUT layout) {
-//        fittingRules.overrideHorizontalLayout(layout);
-//        return this;
-//    }
-//
-//    public FigletFont overrideVerticalLayout(FittingRules.LAYOUT layout) {
-//        fittingRules.overrideVerticalLayout(layout);
-//        return this;
-//    }
+    public FigletFont overrideHorizontalLayout(FittingRules.OVERRIDE_LAYOUT layout) {
+        fittingRules.overrideHorizontalLayout(layout);
+        return this;
+    }
+
+    public FigletFont overrideVerticalLayout(FittingRules.OVERRIDE_LAYOUT layout) {
+        fittingRules.overrideVerticalLayout(layout);
+        return this;
+    }
 
 
     /**
