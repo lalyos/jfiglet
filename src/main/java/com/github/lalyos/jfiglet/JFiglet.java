@@ -61,20 +61,19 @@ public class JFiglet {
         final StringWriter result = new StringWriter();
         final PrintWriter pw = new PrintWriter(result);
         pw.println("Usage: java -jar jfiglet.jar [-f FLF] [-o OUTFILE] [-h HORIZONTAL SMUSHING] [-v VERTICAL SMUSHING] MESSAGE");
-        pw.println("Prints MESSAGE to stdout as ASCII art using Figlet font");
-        pw.println("Example: java -jar jfiglet.jar -f \"/opt/myfont.flf\" -h \"full_width\" -v \"fitting\" \"Hello World\"");
+        pw.println("Prints MESSAGE to OUTFILE (default stdout) as ASCII art using Figlet font");
+        pw.println("Example: java -jar jfiglet.jar -f \"/opt/myfont.flf\" \"Hello World\"");
         pw.println("\n");
         pw.println("Figlet font arguments:");
         pw.println("  -f  (Optional) FLF is font file location within file system, java classpath or www.");
         pw.println("                 When FLF starts with `http://'|`https://' file will be fetched from WWW,");
         pw.println("                 if FLF starts with `classpath:' then it will be looked for in JRE classpath,");
         pw.println("                 otherwise FLF is path to FLF file in file system.");
-        pw.println("  -o  (Optional) Set a file path to output result to.");
+        pw.println("  -o  (Optional) Used to set a file path to output results to.");
         pw.println("  -h  (Optional) Used to override the horizontal smushing of the font, available options:");
         pw.println("                 " + Arrays.toString(FittingRules.OVERRIDE_LAYOUT.values()).toLowerCase());
         pw.println("  -v  (Optional) Used to override the vertical smushing of the font, available options:");
         pw.println("                 " + Arrays.toString(FittingRules.OVERRIDE_LAYOUT.values()).toLowerCase());
-        pw.println("Usage: java -jar jfiglet.jar [-f FLF] [-o OUTFILE] MESSAGE");
         return result.toString();
     }
 }
