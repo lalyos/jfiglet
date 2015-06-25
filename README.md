@@ -1,4 +1,4 @@
-# jfiglet
+# jfiglet [![Build Status](https://travis-ci.org/mcwarman/jfiglet.svg?branch=master)](https://travis-ci.org/mcwarman/jfiglet)
 
 Java implementation of FIGfonts to create ascii art banners. My goals were:
 
