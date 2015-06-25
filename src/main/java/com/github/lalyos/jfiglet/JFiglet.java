@@ -1,16 +1,10 @@
 package com.github.lalyos.jfiglet;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.net.URL;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import static com.github.lalyos.jfiglet.FigletFont.convertOneLine;
+import static com.github.lalyos.jfiglet.FigletFont.convertMessage;
 
 public class JFiglet {
 
@@ -19,13 +13,26 @@ public class JFiglet {
         String font = null;
         String text = null;
         PrintStream out = System.out;
-
-        while (arguments.hasNext()) {
-            final String arg = arguments.next();
-            if ("-f".equals(arg)) {
+        FittingRules.OVERRIDE_LAYOUT vertical = FittingRules.OVERRIDE_LAYOUT.DEFAULT;
+        FittingRules.OVERRIDE_LAYOUT horizontal = FittingRules.OVERRIDE_LAYOUT.DEFAULT;
+        while(arguments.hasNext()){
+            String arg = arguments.next();
+            if (arg.equals("-f")) {
                 font = requireNextArgument(arguments, arg);
             } else if ("-o".equals(arg)) {
                 out = new PrintStream(new FileOutputStream(requireNextArgument(arguments, arg)));
+            } else if (arg.equals("-v")){
+                try {
+                    vertical = FittingRules.OVERRIDE_LAYOUT.valueOf(requireNextArgument(arguments, arg));
+                } catch (IllegalArgumentException ex){
+                    usage();
+                }
+            } else if (arg.equals("-h")){
+                try {
+                    horizontal = FittingRules.OVERRIDE_LAYOUT.valueOf(requireNextArgument(arguments, arg));
+                } catch (IllegalArgumentException ex){
+                    usage();
+                }
             } else {
                 if (!arguments.hasNext()) {
                     text = arg;
@@ -36,9 +43,9 @@ public class JFiglet {
         if (text == null) {
             System.err.println(usage());
         } else if (font == null) {
-            out.println(convertOneLine(text));
+            out.println(convertMessage(text, horizontal, vertical));
         } else {
-            out.println(convertOneLine(font, text));
+            out.println(convertMessage(font, text, horizontal, vertical));
         }
         out.close();
     }
@@ -53,15 +60,20 @@ public class JFiglet {
     private static String usage() {
         final StringWriter result = new StringWriter();
         final PrintWriter pw = new PrintWriter(result);
-        pw.println("Usage: java -jar jfiglet.jar [-f FLF] [-o OUTFILE] MESSAGE");
+        pw.println("Usage: java -jar jfiglet.jar [-f FLF] [-o OUTFILE] [-h HORIZONTAL SMUSHING] [-v VERTICAL SMUSHING] MESSAGE");
         pw.println("Prints MESSAGE to OUTFILE (default stdout) as ASCII art using Figlet font");
         pw.println("Example: java -jar jfiglet.jar -f \"/opt/myfont.flf\" \"Hello World\"");
         pw.println("\n");
-        pw.println("Figlet font:");
-        pw.println("  -f  FLF is font file location within file system, java classpath or www.");
-        pw.println("      When FLF starts with `http://'|`https://' file will be fetched from WWW,");
-        pw.println("      if FLF starts with `classpath:' then it will be looked for in JRE classpath,");
-        pw.println("      otherwise FLF is path to FLF file in file system.");
+        pw.println("Figlet font arguments:");
+        pw.println("  -f  (Optional) FLF is font file location within file system, java classpath or www.");
+        pw.println("                 When FLF starts with `http://'|`https://' file will be fetched from WWW,");
+        pw.println("                 if FLF starts with `classpath:' then it will be looked for in JRE classpath,");
+        pw.println("                 otherwise FLF is path to FLF file in file system.");
+        pw.println("  -o  (Optional) Used to set a file path to output results to.");
+        pw.println("  -h  (Optional) Used to override the horizontal smushing of the font, available options:");
+        pw.println("                 " + Arrays.toString(FittingRules.OVERRIDE_LAYOUT.values()).toLowerCase());
+        pw.println("  -v  (Optional) Used to override the vertical smushing of the font, available options:");
+        pw.println("                 " + Arrays.toString(FittingRules.OVERRIDE_LAYOUT.values()).toLowerCase());
         return result.toString();
     }
 }

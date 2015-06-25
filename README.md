@@ -1,4 +1,4 @@
-# jfiglet
+# jfiglet [![Build Status](https://travis-ci.org/mcwarman/jfiglet.svg?branch=master)](https://travis-ci.org/mcwarman/jfiglet)
 
 Java implementation of FIGfonts to create ascii art banners. My goals were:
 
@@ -38,7 +38,9 @@ add the following maven dependency to your `pom.xml`
 
 ## Usage - code
 
-Then one could use number of `convertOneLine(...)` static methods to do the magic
+Then one could use number of `convertMessage(...)` static methods to do the magic
+
+_NOTE: `covertOneLine(...)` was deprecated due to multi-line functionality being added._
 
 ```
 import com.github.lalyos.jfiglet.FigletFont;
@@ -47,25 +49,25 @@ import java.io.File;
 public class App {
   public static void main(String[] args) {
     // using default font standard.flf, obtained from maven artifact
-    String asciiArt1 = FigletFont.convertOneLine("hello");
+    String asciiArt1 = FigletFont.convertMessage("hello");
     System.out.println(asciiArt1);
     
     // using font font2.flf, located somewhere in classpath under path /flf/font2.flf
-    String asciiArt2 = FigletFont.convertOneLine(FigletFont.class.getResourceAsStream("/flf/font2.flf"), "hello");
+    String asciiArt2 = FigletFont.convertMessage(FigletFont.class.getResourceAsStream("/flf/font2.flf"), "hello");
     System.out.println(asciiArt2);
     
-    asciiArt2 = FigletFont.convertOneLine("classpath:/flf/font2.flf", "hello");     
+    asciiArt2 = FigletFont.convertMessage("classpath:/flf/font2.flf", "hello");
     System.out.println(asciiArt2);                
     
     // using font font3.flf, located in file system under path /opt/font3.flf
-    String asciiArt3 = FigletFont.convertOneLine(new File("/opt/font3.flf"), "hello");     
+    String asciiArt3 = FigletFont.convertMessage(new File("/opt/font3.flf"), "hello");
     System.out.println(asciiArt3);
 
-    asciiArt3 = FigletFont.convertOneLine("/opt/font3.flf", "hello");     
+    asciiArt3 = FigletFont.convertMessage("/opt/font3.flf", "hello");
     System.out.println(asciiArt3);
 
     // using font font4.flf, from www 
-    String asciiArt4 = FigletFont.convertOneLine("http://myhost.com/font4.flf", "hello");     
+    String asciiArt4 = FigletFont.convertMessage("http://myhost.com/font4.flf", "hello");
     System.out.println(asciiArt4);                
   }
 }
@@ -75,22 +77,55 @@ public class App {
 
 You can use the jar from the central repo, or use the latest development version from sourcecode;
 ```
-Usage: java -jar jfiglet.jar [-f FLF] MESSAGE
+Usage: java -jar jfiglet.jar [-f FLF] [-h HORIZONTAL SMUSHING] [-v VERTICAL SMUSHING] MESSAGE
 Prints MESSAGE to stdout as ASCII art using Figlet font
-Example: java -jar jfiglet.jar -f "/opt/myfont.flf" "Hello World"
+Example: java -jar jfiglet.jar -f "/opt/myfont.flf" -h "full_width" -v "fitting" "Hello World"
 
 
-Figlet font:
-  -f  FLF is font file location within file system, java classpath or www.
-      When FLF starts with `http://'|`https://' file will be fetched from WWW,
-      if FLF starts from `classpath:' then it will be looked for in JRE classpath,
-      otherwise FLF if path to file in file system
+Figlet font arguments:
+  -f  (Optional) FLF is font file location within file system, java classpath or www.
+                 When FLF starts with `http://'|`https://' file will be fetched from WWW,
+                 if FLF starts with `classpath:' then it will be looked for in JRE classpath,
+                 otherwise FLF is path to FLF file in file system.
+  -h  (Optional) Used to override the horizontal smushing of the font, available options:
+                 [default, controlled_smushing, smushing, fitting, full_width]
+  -v  (Optional) Used to override the vertical smushing of the font, available options:
+                 [default, controlled_smushing, smushing, fitting, full_width]
+```
+
+## Usage - smushing
+
+Smushing will use the authors preference by default.
+
+```
+       _ _____       __     __
+      (_) __(_)___ _/ /__  / /_
+     / / /_/ / __ `/ / _ \/ __/
+    / / __/ / /_/ / /  __/ /_
+ __/ /_/ /_/\__, /_/\___/\__/
+/___/      /____/
+```
+
+The authors preference can also be overridden, in the following method;
+
+```
+import com.github.lalyos.jfiglet.FigletFont;
+
+public class App {
+  public static void main(String[] args) {
+    String asciiArt = new FigletFont()
+        .overrideHorizontalLayout(FittingRules.LAYOUT.FULL_WIDTH)
+        .overrideVerticalLayout(FittingRules.LAYOUT.CONTROLLED_SMUSHING)
+        .convert("jfiglet");
+    System.out.println(asciiArt);
+  }
+}
 ```
 
 ### from source
 
 ```
-git clone git@github.com:lalyos/jfiglet.git
+git clone git@github.com:mcwarman/jfiglet.git
 cd jfiglet
 mvn exec:java -Dexec.arguments="jfiglet rulez"
 ```
@@ -111,5 +146,4 @@ I found 2 java implementations:
 
 ## Todo
 
-- *smush*-ing: *kerning* is already implemented  as default, smushing needs some coding.
 - add more fonts: first i wanted to keep it small, but want to deliver a couple of fonts included in the jar, or maybe as a separate maven dependency
