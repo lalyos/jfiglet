@@ -62,8 +62,7 @@ public class FigletFont {
     if (font[c][l] == null)
       return null;
     else {
-        String ret = new String(font[c][l]);
-        return ret.substring(1);
+        return new String(font[c][l]);
     }
   }
 
