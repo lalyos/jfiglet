@@ -70,18 +70,20 @@ public class FigletFont {
      * Creates a FigletFont as specified at: https://github.com/lalyos/jfiglet/blob/master/figfont.txt
      *
      * @param stream
+	 * @throws java.io.IOException
      */
   public FigletFont(InputStream stream) throws IOException {
     font = new char[MAX_CHARS][][];
-    DataInputStream data = null;
+    BufferedReader data = null;
     String dummyS;
-    char dummyC;
     int dummyI;
     int charCode;
 
     String codeTag;
     try {
-      data = new DataInputStream(new BufferedInputStream(stream));
+
+	data = new BufferedReader(
+        new InputStreamReader(new BufferedInputStream(stream),"UTF-8"));
 
       dummyS = data.readLine();
       StringTokenizer st = new StringTokenizer(dummyS, " ");
