@@ -8,7 +8,7 @@
 
   <groupId>com.github.lalyos</groupId>
   <artifactId>jfiglet</artifactId>
-  <version>0.0.8</version>
+  <version>0.0.9-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>jfiglet</name>
