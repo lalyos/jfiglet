@@ -8,7 +8,7 @@
 
   <groupId>com.github.lalyos</groupId>
   <artifactId>jfiglet</artifactId>
-  <version>0.0.8-SNAPSHOT</version>
+  <version>0.0.8</version>
   <packaging>jar</packaging>
 
   <name>jfiglet</name>
@@ -68,7 +68,7 @@
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
-          <compilerArgument></compilerArgument>
+          <compilerArgument />
         </configuration>
       </plugin>
       <plugin>
@@ -89,6 +89,15 @@
           <archive>
             <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
           </archive>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>1.6</version>
+        <configuration>
+          <keyname>lalyos@yahoo.com</keyname>
         </configuration>
       </plugin>
 
