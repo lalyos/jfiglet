@@ -154,7 +154,7 @@ public class FigletFont {
   }
 
 
-    public String convert(String message) throws IOException {
+    public String convert(String message){
         String result = "";
         for (int l = 0; l < this.height; l++) { // for each line
             for (int c = 0; c < message.length(); c++)
