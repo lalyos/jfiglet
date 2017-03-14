@@ -1,0 +1,160 @@
+package com.github.lalyos.jfiglet;
+
+import java.io.IOException;
+import java.io.InputStream;
+/**
+ * Enum containing all the fonts that are already in the library.</br>
+ * 
+ * Usage:
+ * <pre>
+ * FigleFonts.big.convert("my string");
+ * </pre>
+ *
+ */
+public enum FigletFonts {
+    three_d,
+    three_five,
+    fivelineoblique,
+    acrobatic,
+    alligator,
+    alligator2,
+    avatar,
+    banner3_d,
+    banner3,
+    banner4,
+    barbwire,
+    basic,
+    bell,
+    big,
+    bigchief,
+    block,
+    bubble,
+    bulbhead,
+    calgphy2,
+    caligraphy,
+    catwalk,
+    chunky,
+    coinstak,
+    contessa,
+    contrast,
+    cosmic,
+    cosmike,
+    cricket,
+    cursive,
+    cyberlarge,
+    cybermedium,
+    cybersmall,
+    diamond,
+    digital,
+    doh,
+    doom,
+    dotmatrix,
+    drpepper,
+    eftichess,
+    eftifont,
+    eftipiti,
+    eftirobot,
+    eftitalic,
+    eftiwall,
+    eftiwater,
+    epic,
+    fender,
+    fourtops,
+    fuzzy,
+    goofy,
+    gothic,
+    graffiti,
+    hollywood,
+    invita,
+    isometric1,
+    isometric2,
+    isometric3,
+    isometric4,
+    italic,
+    jerusalem,
+    katakana,
+    kban,
+    larry3d,
+    lcd,
+    lean,
+    linux,
+    lockergnome,
+    madrid,
+    marquee,
+    mike,
+    mini,
+    mirror,
+    morse,
+    moscow,
+    nancyj_fancy,
+    nancyj_underlined,
+    nancyj,
+    nipples,
+    ntgreek,
+    ogre,
+    pawp,
+    peaks,
+    pebbles,
+    pepper,
+    poison,
+    puffy,
+    rectangles,
+    relief,
+    relief2,
+    rev,
+    roman,
+    rot13,
+    rounded,
+    rowancap,
+    runic,
+    runyc,
+    sblood,
+    script,
+    serifcap,
+    shadow,
+    shortfont,
+    slant,
+    slide,
+    slscript,
+    small,
+    smisome1,
+    smkeyboard,
+    smscript,
+    smshadow,
+    smslant,
+    smtengwar,
+    speed,
+    stampatello,
+    standard,
+    starwars,
+    stellar,
+    stop,
+    straight,
+    tanja,
+    term,
+    thin,
+    threepoint,
+    ticks,
+    ticksslant,
+    tombstone,
+    trek,
+    tsalagi,
+    twopoint,
+    usaflag,
+    weird;
+
+
+    private FigletFont font;
+
+    public String convert(String input) {
+        if (font == null) {
+            try {
+                InputStream resourceAsStream = this.getClass().getResourceAsStream(name() + ".flf");
+                font = new FigletFont(resourceAsStream);
+            } catch (IOException wontHappen) {
+                throw new RuntimeException(wontHappen);
+            }
+        }
+        return font.convert(input);
+    }
+}

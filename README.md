@@ -67,9 +67,15 @@ public class App {
     // using font font4.flf, from www 
     String asciiArt4 = FigletFont.convertOneLine("http://myhost.com/font4.flf", "hello");     
     System.out.println(asciiArt4);                
+    
+    //Using fonts already in the artifact
+    String asciiArt5 = FigleFonts.big.convert("hello");
+    System.out.println(asciiArt5);                
+    
   }
 }
 ```
+The list of fonts available in `FigleFonts` can be found here: [FONTS.md](FONTS.md)
 
 ## Usage - command line
 

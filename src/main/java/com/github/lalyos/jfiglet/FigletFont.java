@@ -26,7 +26,7 @@ public class FigletFont {
   public int heightWithoutDescenders = -1;
   public int maxLine = -1;
   public int smushMode = -1;
-  public char font[][][] = null;
+  private final char font[][][];
   public String fontName = null;
   final public static int MAX_CHARS = 1024;
 
@@ -59,8 +59,8 @@ public class FigletFont {
      * @return The selected line from the character
      */
   public String getCharLineString(int c, int l) {
-    if (font[c][l] == null)
-      return null;
+    if (font[c] == null || font[c][l] == null)
+      return "";
     else {
         return new String(font[c][l]);
     }
@@ -82,8 +82,7 @@ public class FigletFont {
     String codeTag;
     try {
 
-	data = new BufferedReader(
-        new InputStreamReader(new BufferedInputStream(stream),"UTF-8"));
+	data = new BufferedReader(new InputStreamReader(new BufferedInputStream(stream),"UTF-8"));
 
       dummyS = data.readLine();
       StringTokenizer st = new StringTokenizer(dummyS, " ");
@@ -154,23 +153,24 @@ public class FigletFont {
   }
 
 
-    public String convert(String message) throws IOException {
-        String result = "";
+    public String convert(String message) {
+        StringBuilder sb = new StringBuilder();
         for (int l = 0; l < this.height; l++) { // for each line
-            for (int c = 0; c < message.length(); c++)
-                // for each char
-                result += this.getCharLineString((int) message.charAt(c), l);
-            result += '\n';
+            for (int c = 0; c < message.length(); c++){
+                String charLineString = this.getCharLineString((int) message.charAt(c), l);
+                sb.append(charLineString);
+            }
+            sb.append('\n');
         }
-        return result;
+        return sb.toString();
     }
 
     public static String convertOneLine(InputStream fontFileStream, String message) throws IOException {
         return new FigletFont(fontFileStream).convert(message);
     }
 
-    public static String convertOneLine(String message) throws IOException {
-        return convertOneLine(FigletFont.class.getClassLoader().getResourceAsStream("standard.flf"), message);
+    public static String convertOneLine(String message)  {
+        return FigletFonts.standard.convert(message);
     }
 
     public static String convertOneLine(File fontFile, String message) throws IOException {
