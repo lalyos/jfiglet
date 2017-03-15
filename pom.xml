@@ -1,118 +1,122 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>7</version>
-  </parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
 
-  <groupId>com.github.lalyos</groupId>
-  <artifactId>jfiglet</artifactId>
-  <version>0.0.9-SNAPSHOT</version>
-  <packaging>jar</packaging>
+	<groupId>com.github.lalyos</groupId>
+	<artifactId>jfiglet</artifactId>
+	<version>0.0.9-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-  <name>jfiglet</name>
-  <description>Java implementation of FIGfonts (http://www.figlet.org/) to create ascii art banners</description>
-  <url>http://lalyos.github.io/jfiglet/</url>
+	<name>jfiglet</name>
+	<description>Java implementation of FIGfonts (http://www.figlet.org/) to create ascii art banners</description>
+	<url>http://lalyos.github.io/jfiglet/</url>
 
-  <licenses>
-    <license>
-      <name>GNU General Public License v2.0</name>
-      <url>http://www.gnu.org/licenses/gpl-2.0.html</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-  <scm>
-    <connection>scm:git:git://github.com/lalyos/jfiglet.git</connection>
-    <developerConnection>scm:git:git@github.com:lalyos/jfiglet.git</developerConnection>
-    <url>https://github.com/lalyos/jfiglet</url>
-  </scm>
-  <issueManagement>
-    <system>Github</system>
-    <url>https://github.com/lalyos/jfiglet/issues</url>
-  </issueManagement>
-  <developers>
-    <developer>
-      <id>lalyos</id>
-      <email>lalyos@yahoo.com</email>
-      <name>Lajos Papp</name>
-      <roles>
-        <role>owner</role>
-      </roles>
-    </developer>
-  </developers>
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <name>Sonatype Nexus Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <name>Nexus Release Repository</name>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-    </repository>
+	<licenses>
+		<license>
+			<name>GNU General Public License v2.0</name>
+			<url>http://www.gnu.org/licenses/gpl-2.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<scm>
+		<connection>scm:git:git://github.com/lalyos/jfiglet.git</connection>
+		<developerConnection>scm:git:git@github.com:lalyos/jfiglet.git</developerConnection>
+		<url>https://github.com/lalyos/jfiglet</url>
+	</scm>
+	<issueManagement>
+		<system>Github</system>
+		<url>https://github.com/lalyos/jfiglet/issues</url>
+	</issueManagement>
+	<developers>
+		<developer>
+			<id>lalyos</id>
+			<email>lalyos@yahoo.com</email>
+			<name>Lajos Papp</name>
+			<roles>
+				<role>owner</role>
+			</roles>
+		</developer>
+	</developers>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<name>Nexus Release Repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
 
-  </distributionManagement>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+	</distributionManagement>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
-  <dependencies>
-  </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-          <compilerArgument />
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
-        <configuration>
-          <mainClass>com.github.lalyos.jfiglet.JFiglet</mainClass>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<compilerArgument />
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<configuration>
+					<mainClass>com.github.lalyos.jfiglet.JFiglet</mainClass>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<archive>
+						<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.6</version>
+				<configuration>
+					<keyname>lalyos@yahoo.com</keyname>
+				</configuration>
+			</plugin>
 
-        </configuration>
-      </plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.2</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-          <archive>
-            <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
-          </archive>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <version>1.6</version>
-        <configuration>
-          <keyname>lalyos@yahoo.com</keyname>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.2</version>
-        <extensions>true</extensions>
-        <configuration>
-           <serverId>ossrh</serverId>
-           <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-           <autoReleaseAfterClose>true</autoReleaseAfterClose>
-        </configuration>
-      </plugin>
-
-    </plugins>
-  </build>
+		</plugins>
+	</build>
 </project>
