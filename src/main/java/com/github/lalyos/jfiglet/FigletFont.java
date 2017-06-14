@@ -129,8 +129,10 @@ public class FigletFont {
             continue;
           }
           codeTag = dummyS.concat(" ").split(" ")[0];
-          if (codeTag.length()>2&&"x".equals(codeTag.substring(1,2))) {
-            charCode = Integer.parseInt(codeTag.substring(2),16);
+          if (codeTag.matches("^0[xX][0-9a-fA-F]+$")) {
+            charCode = Integer.parseInt(codeTag.substring(2), 16);
+          } else if (codeTag.matches("^0[0-7]+$")) {
+            charCode = Integer.parseInt(codeTag.substring(2), 8);
           } else {
             charCode = Integer.parseInt(codeTag);
           }
