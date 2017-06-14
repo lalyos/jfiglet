@@ -176,6 +176,18 @@ public class FigletFontTest {
     assertEqualsJFiglet(asciiArt);
   }
 
+  @Test
+  public void testConvertFontO8() throws Exception {
+    String asciiArt = FigletFont.convertOneLine(FigletFontTest.class.getClassLoader().getResourceAsStream("o8.flf"), "ABCDE");
+    assertEquals("     o      oooooooooo    oooooooo8 ooooooooo   ooooooooooo " + LINE_ENDING +
+        "    888      888    888 o888     88  888    88o  888    88  " + LINE_ENDING +
+        "   8  88     888oooo88  888          888    888  888ooo8    " + LINE_ENDING +
+        "  8oooo88    888    888 888o     oo  888    888  888    oo  " + LINE_ENDING +
+        "o88o  o888o o888ooo888   888oooo88  o888ooo88   o888ooo8888 " + LINE_ENDING +
+        "                                                            " + LINE_ENDING,
+        asciiArt);
+  }
+
   private void assertEqualsJFiglet(String asciiArt) {
     assertEquals("    _    __   _           _          _   " + LINE_ENDING +
             "   (_)  / _| (_)   __ _  | |   ___  | |_ " + LINE_ENDING +

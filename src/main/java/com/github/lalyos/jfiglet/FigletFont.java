@@ -29,6 +29,7 @@ public class FigletFont {
   public char font[][][] = null;
   public String fontName = "";
   final public static int MAX_CHARS = 1024;
+  final public static int REGULAR_CHARS = 102;
 
    /**
      * Returns all character from this Font. Each character is defined as
@@ -105,34 +106,38 @@ public class FigletFont {
           fontName = st.nextToken();
       }
 
+      int[] charsTo = new int[REGULAR_CHARS];
+
+      int j = 0;
+      for(int c = 32; c <= 126; ++c){
+        charsTo[j++] = c;
+      }
+      for(int additional : new int[]{196, 214, 220, 228, 246, 252, 223}){
+        charsTo[j++] = additional;
+      }
+
       for (int i = 0; i < dummyI-1; i++) // skip the comments
         dummyS = data.readLine();
-      charCode = 31;
+      int charPos = 0;
       while (dummyS!=null) {  // for all the characters
         //System.out.print(i+":");
-        charCode++;
+        if(charPos < REGULAR_CHARS) {
+          charCode = charsTo[charPos++];
+        } else {
+          dummyS = data.readLine();
+          if (dummyS == null){
+            continue;
+          }
+          codeTag = dummyS.concat(" ").split(" ")[0];
+          if (codeTag.length()>2&&"x".equals(codeTag.substring(1,2))) {
+            charCode = Integer.parseInt(codeTag.substring(2),16);
+          } else {
+            charCode = Integer.parseInt(codeTag);
+          }
+        }
         for (int h = 0; h < height; h++) {
           dummyS = data.readLine();
           if (dummyS != null){
-            //System.out.println(dummyS);
-            int iNormal = charCode;
-            boolean abnormal = true;
-            if (h == 0) {
-              try {
-                  codeTag = dummyS.concat(" ").split(" ")[0];
-                  if (codeTag.length()>2&&"x".equals(codeTag.substring(1,2))){
-                      charCode = Integer.parseInt(codeTag.substring(2),16);
-                  } else {
-                      charCode = Integer.parseInt(codeTag);
-                  }
-              } catch (NumberFormatException e) {
-                abnormal = false;
-              }
-              if (abnormal)
-                dummyS = data.readLine();
-              else
-                charCode = iNormal;
-            }
             if (h == 0)
               font[charCode] = new char[height][];
             int t = dummyS.length() - 1 - ((h == height-1) ? 1 : 0);
