@@ -27,7 +27,7 @@ public class FigletFont {
   public int maxLine = -1;
   public int smushMode = -1;
   public char font[][][] = null;
-  public String fontName = null;
+  public String fontName = "";
   final public static int MAX_CHARS = 1024;
 
    /**
@@ -95,15 +95,15 @@ public class FigletFont {
       smushMode = Integer.parseInt(st.nextToken());
       dummyI = Integer.parseInt(st.nextToken());
 
-            /*
-             * try to read the font name as the first word of the first comment
-             * line, but this is not standardized !
-             */
-      st = new StringTokenizer(data.readLine(), " ");
-      if (st.hasMoreElements())
-        fontName = st.nextToken();
-      else
-        fontName = "";
+      /*
+      * try to read the font name as the first word of the first comment
+      * line, but this is not standardized !
+      */
+      if(dummyI > 0) {
+        st = new StringTokenizer(data.readLine(), " ");
+        if (st.hasMoreElements())
+          fontName = st.nextToken();
+      }
 
       for (int i = 0; i < dummyI-1; i++) // skip the comments
         dummyS = data.readLine();
