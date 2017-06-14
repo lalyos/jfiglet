@@ -59,6 +59,30 @@ public class FigletFontTest {
   }
 
   @Test
+  public void testConstructNoNameNoComments() throws Exception {
+    FigletFont ff = new FigletFont(FigletFontTest.class.getClassLoader().getResourceAsStream("standard-without-name-no-comments.flf"));
+    assertEquals("", ff.fontName);
+    assertEquals('$', ff.hardblank);
+    assertEquals(6, ff.height);
+    assertEquals(5, ff.heightWithoutDescenders);
+    assertEquals(16, ff.maxLine);
+    assertEquals(15, ff.smushMode);
+    //space
+    assertEquals(' ', ff.font[32][0][0]);
+    assertEquals(' ', ff.font[32][0][1]);
+    assertEquals(' ', ff.font[32][1][0]);
+    assertEquals(' ', ff.font[32][1][1]);
+    assertEquals(' ', ff.font[32][2][0]);
+    assertEquals(' ', ff.font[32][2][1]);
+    assertEquals(' ', ff.font[32][3][0]);
+    assertEquals(' ', ff.font[32][3][1]);
+    assertEquals(' ', ff.font[32][4][0]);
+    assertEquals(' ', ff.font[32][4][1]);
+    assertEquals(' ', ff.font[32][5][0]);
+    assertEquals(' ', ff.font[32][5][1]);
+  }
+
+  @Test
   public void testGetFont() throws Exception {
     FigletFont ff = new FigletFont(FigletFontTest.class.getClassLoader().getResourceAsStream("standard.flf"));
     assertEquals(' ', ff.getFont()[32][0][0]);
@@ -105,7 +129,7 @@ public class FigletFontTest {
 
   @Test
   public void testGetCharLineStringWithNullLine() throws Exception {
-    FigletFont ff = new FigletFont(FigletFontTest.class.getClassLoader().getResourceAsStream("standard-without-name-and-null-line.flf"));
+    FigletFont ff = new FigletFont(FigletFontTest.class.getClassLoader().getResourceAsStream("standard-null-line.flf"));
     assertEquals("  ", ff.getCharLineString(32, 0));
     assertEquals("  ", ff.getCharLineString(32, 1));
     assertEquals("  ", ff.getCharLineString(32, 2));
