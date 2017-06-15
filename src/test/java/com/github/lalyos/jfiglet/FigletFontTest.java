@@ -164,6 +164,14 @@ public class FigletFontTest {
         asciiArt);
   }
 
+  @Test
+  public void testConvertCharCode() throws  Exception {
+    FigletFont ff = new FigletFont(FigletFontTest.class.getClassLoader().getResourceAsStream("standard.flf"));
+    assertEquals(255, ff.convertCharCode("255  LATIN SMALL LETTER Y WITH DIAERESIS"));
+    assertEquals(256, ff.convertCharCode("0x0100  LATIN CAPITAL LETTER A WITH MACRON"));
+    assertEquals(63, ff.convertCharCode("077 QUESTION MARK (OCTAL)"));
+  }
+
   private void assertEqualsJFiglet(String asciiArt) {
     assertEquals("    _    __   _           _          _   " + LINE_ENDING +
             "   (_)  / _| (_)   __ _  | |   ___  | |_ " + LINE_ENDING +
