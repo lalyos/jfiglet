@@ -80,7 +80,6 @@ public class FigletFont {
     int dummyI;
     int charCode;
 
-    String codeTag;
     try {
 
 	data = new BufferedReader(
@@ -128,14 +127,7 @@ public class FigletFont {
           if (dummyS == null){
             continue;
           }
-          codeTag = dummyS.concat(" ").split(" ")[0];
-          if (codeTag.matches("^0[xX][0-9a-fA-F]+$")) {
-            charCode = Integer.parseInt(codeTag.substring(2), 16);
-          } else if (codeTag.matches("^0[0-7]+$")) {
-            charCode = Integer.parseInt(codeTag.substring(2), 8);
-          } else {
-            charCode = Integer.parseInt(codeTag);
-          }
+          charCode = convertCharCode(dummyS);
         }
         for (int h = 0; h < height; h++) {
           dummyS = data.readLine();
@@ -157,6 +149,17 @@ public class FigletFont {
         if (data != null) {
             data.close();
         }
+    }
+  }
+
+  int convertCharCode(String input){
+    String codeTag = input.concat(" ").split(" ")[0];
+    if (codeTag.matches("^0[xX][0-9a-fA-F]+$")) {
+      return Integer.parseInt(codeTag.substring(2), 16);
+    } else if (codeTag.matches("^0[0-7]+$")) {
+      return Integer.parseInt(codeTag.substring(1), 8);
+    } else {
+      return Integer.parseInt(codeTag);
     }
   }
 
