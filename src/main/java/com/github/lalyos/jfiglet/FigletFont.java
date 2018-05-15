@@ -71,7 +71,7 @@ public class FigletFont {
      * Creates a FigletFont as specified at: https://github.com/lalyos/jfiglet/blob/master/figfont.txt
      *
      * @param stream
-	 * @throws java.io.IOException
+     * @throws java.io.IOException
      */
   public FigletFont(InputStream stream) throws IOException {
     font = new char[MAX_CHARS][][];
@@ -82,7 +82,7 @@ public class FigletFont {
 
     try {
 
-	data = new BufferedReader(
+    data = new BufferedReader(
         new InputStreamReader(new BufferedInputStream(stream),"UTF-8"));
 
       dummyS = data.readLine();
@@ -164,38 +164,38 @@ public class FigletFont {
   }
 
 
-    public String convert(String message){
-        String result = "";
-        for (int l = 0; l < this.height; l++) { // for each line
-            for (int c = 0; c < message.length(); c++)
-                // for each char
-                result += this.getCharLineString((int) message.charAt(c), l);
-            result += '\n';
-        }
-        return result;
+  public String convert(String message) {
+    String result = "";
+    for (int l = 0; l < this.height; l++) { // for each line
+      for (int c = 0; c < message.length(); c++)
+        // for each char
+        result += this.getCharLineString((int) message.charAt(c), l);
+      result += '\n';
     }
+    return result;
+  }
 
-    public static String convertOneLine(InputStream fontFileStream, String message) throws IOException {
-        return new FigletFont(fontFileStream).convert(message);
-    }
+  public static String convertOneLine(InputStream fontFileStream, String message) throws IOException {
+    return new FigletFont(fontFileStream).convert(message);
+  }
 
-    public static String convertOneLine(String message) throws IOException {
-        return convertOneLine(FigletFont.class.getClassLoader().getResourceAsStream("standard.flf"), message);
-    }
+  public static String convertOneLine(String message) throws IOException {
+    return convertOneLine(FigletFont.class.getClassLoader().getResourceAsStream("standard.flf"), message);
+  }
 
-    public static String convertOneLine(File fontFile, String message) throws IOException {
-        return convertOneLine(new FileInputStream(fontFile), message);
-    }
+  public static String convertOneLine(File fontFile, String message) throws IOException {
+    return convertOneLine(new FileInputStream(fontFile), message);
+  }
 
-    public static String convertOneLine(String fontPath, String message) throws IOException {
-        InputStream fontStream = null;
-        if (fontPath.startsWith("classpath:")) {
-            fontStream = FigletFont.class.getResourceAsStream(fontPath.substring(10));
-        } else if (fontPath.startsWith("http://") || fontPath.startsWith("https://")) {
-            fontStream = new URL(fontPath).openStream();
-        } else {
-            fontStream = new FileInputStream(fontPath);
-        }
-        return convertOneLine(fontStream, message);
+  public static String convertOneLine(String fontPath, String message) throws IOException {
+    InputStream fontStream = null;
+    if (fontPath.startsWith("classpath:")) {
+      fontStream = FigletFont.class.getResourceAsStream(fontPath.substring(10));
+    } else if (fontPath.startsWith("http://") || fontPath.startsWith("https://")) {
+      fontStream = new URL(fontPath).openStream();
+    } else {
+      fontStream = new FileInputStream(fontPath);
     }
+    return convertOneLine(fontStream, message);
+  }
 }
