@@ -26,8 +26,14 @@ public class FigletFont {
   public int heightWithoutDescenders = -1;
   public int maxLine = -1;
   public int smushMode = -1;
+  public Integer printDirection = null;
+  public Integer fullLayout = null;
+  public Integer codetagCount = null;
   public char font[][][] = null;
   public String fontName = "";
+
+  SmushingRulesToApply smushingRulesToApply;
+
   final public static int MAX_CHARS = 1024;
   final public static int REGULAR_CHARS = 102;
 
@@ -63,7 +69,7 @@ public class FigletFont {
     if (font[c][l] == null)
       return null;
     else {
-        return new String(font[c][l]);
+        return new String(font[c][l]).replace(hardblank, ' ');
     }
   }
 
@@ -77,7 +83,7 @@ public class FigletFont {
     font = new char[MAX_CHARS][][];
     BufferedReader data = null;
     String dummyS;
-    int dummyI;
+    int commentLines;
     int charCode;
 
     try {
@@ -93,13 +99,24 @@ public class FigletFont {
       heightWithoutDescenders = Integer.parseInt(st.nextToken());
       maxLine = Integer.parseInt(st.nextToken());
       smushMode = Integer.parseInt(st.nextToken());
-      dummyI = Integer.parseInt(st.nextToken());
+      commentLines = Integer.parseInt(st.nextToken());
+      if(st.hasMoreTokens()) {
+        printDirection = Integer.parseInt(st.nextToken());
+      }
+      if(st.hasMoreTokens()) {
+        fullLayout = Integer.parseInt(st.nextToken());
+      }
+      if(st.hasMoreTokens()) {
+        codetagCount = Integer.parseInt(st.nextToken());
+      }
+
+      smushingRulesToApply = Smushing.getRulesToApply(smushMode, fullLayout);
 
       /*
       * try to read the font name as the first word of the first comment
       * line, but this is not standardized !
       */
-      if(dummyI > 0) {
+      if(commentLines > 0) {
         st = new StringTokenizer(data.readLine(), " ");
         if (st.hasMoreElements())
           fontName = st.nextToken();
@@ -115,7 +132,7 @@ public class FigletFont {
         charsTo[j++] = additional;
       }
 
-      for (int i = 0; i < dummyI-1; i++) // skip the comments
+      for (int i = 0; i < commentLines-1; i++) // skip the comments
         dummyS = data.readLine();
       int charPos = 0;
       while (dummyS!=null) {  // for all the characters
@@ -140,7 +157,7 @@ public class FigletFont {
             font[charCode][h] = new char[t];
             for (int l = 0; l < t; l++) {
               char a = dummyS.charAt(l);
-              font[charCode][h][l] = (a == hardblank) ? ' ' : a;
+              font[charCode][h][l] = a;
             }
           }
         }
@@ -165,14 +182,13 @@ public class FigletFont {
 
 
   public String convert(String message) {
-    String result = "";
-    for (int l = 0; l < this.height; l++) { // for each line
-      for (int c = 0; c < message.length(); c++)
-        // for each char
-        result += this.getCharLineString((int) message.charAt(c), l);
-      result += '\n';
+    char[][] convertedMessage = Smushing.convert(this, message);
+    StringBuilder result = new StringBuilder();
+    for(int l = 0; l < this.height; l++){
+      result.append(convertedMessage[l]);
+      result.append('\n');
     }
-    return result;
+    return result.toString().replace(hardblank, ' ');
   }
 
   public static String convertOneLine(InputStream fontFileStream, String message) throws IOException {
@@ -197,5 +213,10 @@ public class FigletFont {
       fontStream = new FileInputStream(fontPath);
     }
     return convertOneLine(fontStream, message);
+  }
+
+  FigletFont withSmushingRulesToApply(SmushingRulesToApply smushingRulesToApply){
+    this.smushingRulesToApply = smushingRulesToApply;
+    return this;
   }
 }

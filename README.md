@@ -12,11 +12,12 @@ I started out from Benoît Rigaut, Juillet work found at [www.rigaut.com](http:/
 [figlet](http://www.figlet.org/) is a command-line tool which helps you to create ascii banners like this:
 
 ```
-     _  _____  ___   ____  _      _____  _____
-    | ||  ___||_ _| / ___|| |    | ____||_   _|
- _  | || |_    | | | |  _ | |    |  _|    | |  
-| |_| ||  _|   | | | |_| || |___ | |___   | |  
- \___/ |_|    |___| \____||_____||_____|  |_|  
+      _ _____ ___ ____ _     _____ _____
+     | |  ___|_ _/ ___| |   | ____|_   _|
+  _  | | |_   | | |  _| |   |  _|   | |
+ | |_| |  _|  | | |_| | |___| |___  | |
+  \___/|_|   |___\____|_____|_____| |_|
+
 ```
 
 Figlet has a *specification* which is included into the repo for easy access [here](https://github.com/lalyos/jfiglet/blob/master/figfont.txt)
@@ -111,5 +112,5 @@ I found 2 java implementations:
 
 ## Todo
 
-- *smush*-ing: *kerning* is already implemented  as default, smushing needs some coding.
+- vertical *smush*-ing
 - add more fonts: first i wanted to keep it small, but want to deliver a couple of fonts included in the jar, or maybe as a separate maven dependency
