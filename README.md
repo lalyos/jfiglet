@@ -98,7 +98,7 @@ mvn exec:java -Dexec.arguments="jfiglet rulez"
 ### from maven central
 
 ```
-curl -o jfiglet.jar http://central.maven.org/maven2/com/github/lalyos/jfiglet/0.0.8/jfiglet-0.0.8.jar
+curl -o jfiglet.jar https://repo1.maven.org/maven2/com/github/lalyos/jfiglet/0.0.8/jfiglet-0.0.8.jar
 java -jar jfiglet.jar "text to convert"
 ```
 
